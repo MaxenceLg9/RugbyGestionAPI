@@ -1,0 +1,17 @@
+RewriteEngine On
+RewriteBase /
+
+# If the request is for the root path (empty path), redirect to /controleur/index.php
+RewriteRule ^$ /controleur/index.php [L,QSA]
+
+
+# Rule 1: Add .php if the request does not already have it
+RewriteCond %{REQUEST_FILENAME}.php -f
+RewriteCond %{REQUEST_URI} !\.php$
+RewriteRule ^(.*)$ $1.php [L,QSA]
+
+# Rule 2: Redirect to /controleur/ for all other requests (excluding .php files)
+RewriteCond %{REQUEST_URI} !^/resources/
+RewriteCond %{REQUEST_URI} !^/controleur/
+RewriteRule ^(.*)$ /controleur/$1 [L,QSA]
+
