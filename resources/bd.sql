@@ -1,3 +1,9 @@
+DROP DATABASE IF EXISTS rugbygestion;
+
+CREATE DATABASE IF NOT EXISTS rugbygestion;
+
+USE rugbygestion;
+
 DROP TABLE IF EXISTS Participer;
 DROP TABLE IF EXISTS MatchDeRugby;
 DROP TABLE IF EXISTS Joueur;
