@@ -1,26 +1,12 @@
 <?php
 
-require_once 'Connexion.php';
-require_once '../modele/MatchDeRugby.php';
-class DAOMatchDeRugby {
+require_once '../db/db.php';
 
-    /**
-     * @param mixed $row
-     * @return MatchDeRugby
-     * @throws DateMalformedStringException
-     */
-    public static function createMatch(mixed $row): MatchDeRugby
-    {
-        $match = new MatchDeRugby($row['idMatch'], new DateTime($row['dateHeure']), $row['adversaire'],
-            Lieu::from($row['lieu']), $row['valider']);
-        if($row["resultat"] != null)
-            $match->setResultat(Resultat::from($row["resultat"]));
-        return $match;
-    }
+class DAOMatchDeRugby {
 
     public function create(MatchDeRugby $match): void {
         try {
-            $connexion = Connexion::getInstance()->getConnection();
+            $connexion = getPDO();
             $statement = $connexion->prepare(
                 "INSERT INTO MatchDeRugby (dateHeure, adversaire, lieu, valider) 
                    VALUES (:dateHeure, :adversaire, :lieu, 0)");
@@ -41,56 +27,49 @@ class DAOMatchDeRugby {
     }
 
     public static function read(): array {
-        $matches = [];
         try {
-            $connexion = Connexion::getInstance()->getConnection();
+            $connexion = getPDO();
             $statement = $connexion->prepare("SELECT * FROM MatchDeRugby ORDER BY dateHeure");
             $statement->execute();
-            while ($row = $statement->fetch()) {
-                $matches[] = self::createMatch($row);
-            }
+
+            return $statement->fetchAll(PDO::FETCH_ASSOC);
         } catch (Exception $e) {
             echo "Erreur lors de la lecture des matches: " . $e->getMessage();
         }
-        return $matches;
+        return [];
     }
 
-    public static function readById(int $idMatch): ?MatchDeRugby {
+    public static function readById(int $idMatch): array {
         try {
-            $connexion = Connexion::getInstance()->getConnection();
+            $connexion = getPDO();
             $statement = $connexion->prepare("SELECT * FROM MatchDeRugby WHERE idMatch = :idMatch");
             $statement->bindParam(':idMatch', $idMatch);
             $statement->execute();
-            $row = $statement->fetch();
-            if ($row) {
-                return self::createMatch($row);
-            }
+            return $statement->fetchAll(PDO::FETCH_ASSOC);
         } catch (Exception $e) {
             echo "Erreur lors de la lecture du match: " . $e->getMessage();
         }
-        return null;
+        return [];
     }
 
-    public function readByDateHeure(DateTime $dateHeure): ?MatchDeRugby {
+    public function readByDateHeure(DateTime $dateHeure): array {
         $dateHeure = $dateHeure->format('Y-m-d H:i:s');
         try {
-            $connexion = Connexion::getInstance()->getConnection();
+            $connexion = getPDO();
             $statement = $connexion->prepare("SELECT * FROM MatchDeRugby WHERE dateHeure = :dateHeure");
             $statement->bindParam(':dateHeure', $dateHeure);
             $statement->execute();
-            $row = $statement->fetch();
-            if ($row) {
-                return self::createMatch($row);
-            }
+
+            return $statement->fetchAll(PDO::FETCH_ASSOC);
         } catch (Exception $e) {
             echo "Erreur lors de la lecture du match: " . $e->getMessage();
         }
-        return null;
+        return [];
     }
 
     public function update(MatchDeRugby $match): void {
         try {
-            $connexion = Connexion::getInstance()->getConnection();
+            $connexion = getPDO();
             $statement = $connexion->prepare(
                 "UPDATE MatchDeRugby SET dateHeure = :dateHeure, adversaire = :adversaire, lieu = :lieu
                    WHERE idMatch = :idMatch");
@@ -115,7 +94,7 @@ class DAOMatchDeRugby {
 
     public function delete(MatchDeRugby $matchDeRugby): void {
         try {
-            $connexion = Connexion::getInstance()->getConnection();
+            $connexion = getPDO();
             $statement = $connexion->prepare("DELETE FROM MatchDeRugby WHERE idMatch = :idMatch");
             $id = $matchDeRugby->getIdMatch();
             $statement->bindParam(':idMatch', $id);
@@ -131,25 +110,21 @@ class DAOMatchDeRugby {
 
     public function readMatchWithResultat(): array
     {
-        $matches = [];
         try {
-            $connexion = Connexion::getInstance()->getConnection();
+            $connexion = getPDO();
             $statement = $connexion->prepare("SELECT * FROM MatchDeRugby WHERE resultat is not null ORDER BY dateHeure");
             $statement->execute();
-            while ($row = $statement->fetch()) {
-                $match = self::createMatch($row);
-                $matches[] = $match;
-            }
+            return $statement->fetchAll(PDO::FETCH_ASSOC);
         } catch (Exception $e) {
             echo "Erreur lors de la lecture des matches: " . $e->getMessage();
         }
-        return $matches;
+        return [];
     }
 
     public function validerMatch(MatchDeRugby $match): void
     {
         try {
-            $connexion = Connexion::getInstance()->getConnection();
+            $connexion = getPDO();
             $statement = $connexion->prepare("UPDATE MatchDeRugby SET resultat = :resultat, valider := 1 WHERE idMatch = :idMatch");
 
             $idMatch = $match->getIdMatch();
