@@ -83,3 +83,11 @@ VALUES
     ('2024-11-25 15:00:00', 'Australie', 'EXTERIEUR', 'VICTOIRE', TRUE),
     ('2024-10-30 20:00:00', 'Argentine', 'DOMICILE', 'VICTOIRE', TRUE),
     ('2024-08-15 19:00:00', 'Fidji', 'EXTERIEUR', 'VICTOIRE', TRUE);
+
+
+INSERT INTO Participer (idMatch, idJoueur, estTitulaire, numero, archive)
+VALUES
+    (1,1,1,1,0)
+    ,(1,2,1,2,0)
+    ,(1,3,1,3,0)
+    ,(1,4,1,4,0);

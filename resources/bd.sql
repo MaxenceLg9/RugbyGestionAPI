@@ -36,21 +36,21 @@ CREATE TABLE IF NOT EXISTS Joueur (
     );
 
 CREATE TABLE IF NOT EXISTS MatchDeRugby (
-                                            idMatch INT PRIMARY KEY AUTO_INCREMENT,
-                                            dateHeure DATETIME NOT NULL,
-                                            adversaire VARCHAR(50) NOT NULL,
+    idMatch INT PRIMARY KEY AUTO_INCREMENT,
+    dateHeure DATETIME NOT NULL,
+    adversaire VARCHAR(50) NOT NULL,
     lieu ENUM('DOMICILE', 'EXTERIEUR') NOT NULL,
     resultat ENUM('VICTOIRE', 'DEFAITE', 'NUL') NULL,
     valider BOOLEAN NOT NULL
     );
 
 CREATE TABLE IF NOT EXISTS Participer (
-                                              idMatch INT NOT NULL,
-                                              idJoueur INT NOT NULL,
-                                              estTitulaire BOOLEAN NULL,
-                                              numero INT NOT NULL,
+    idMatch INT NOT NULL,
+    idJoueur INT NOT NULL,
+    estTitulaire BOOLEAN NOT NULL,
+    numero INT NOT NULL,
     note FLOAT NULL,
-    archive BOOLEAN NOT NULL,
+    archive BOOLEAN NULL,
     PRIMARY KEY (idMatch, numero),
     FOREIGN KEY (idMatch) REFERENCES MatchDeRugby(idMatch),
     FOREIGN KEY (idJoueur) REFERENCES Joueur(idJoueur)
