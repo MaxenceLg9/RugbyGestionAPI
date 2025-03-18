@@ -97,7 +97,7 @@ namespace Joueur {
                     numeroLicense = :numeroLicense, nom = :nom, prenom = :prenom, dateNaissance = :dateNaissance, commentaire= :commentaire
               WHERE idJoueur = :idJoueur"
             );
-            self::bindParams($joueur, $statement);
+            bindParams($joueur, $statement);
             $statement->bindParam(':idJoueur', $joueur["idJoueur"]);
 
             return $statement->execute();

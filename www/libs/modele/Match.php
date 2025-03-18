@@ -2,7 +2,7 @@
 
 namespace MatchDeRugby {
 
-    require_once '../db/db.php';
+    require_once "{$_SERVER["DOCUMENT_ROOT"]}/../libs/db/db.php";
 
     use DateTime;
     use Exception;
