@@ -1,13 +1,18 @@
 <?php
 
-require_once '../db/db.php';
+namespace Joueur {
 
-class DAOJoueur {
+    use DateMalformedStringException;
+    use PDO;
+    use PDOException;
+    use PDOStatement;
+
+    require_once "{$_SERVER["DOCUMENT_ROOT"]}/../libs/db/db.php";
 
     /**
      * @throws DateMalformedStringException
      */
-    public static function readActif():array
+    function readActif():array
     {
         try {
             $connexion = getPDO();
@@ -21,14 +26,14 @@ class DAOJoueur {
         return [];
     }
 
-    public static function create(array $joueur): string {
+    function create(array $joueur): string {
         try {
             $connexion = getPDO();
             $statement = $connexion->prepare(
                 "INSERT INTO Joueur (numeroLicense, nom, prenom, dateNaissance, taille, poids, statut, postePrefere, estPremiereLigne, commentaire) 
                    VALUES (:numeroLicense, :nom, :prenom, :dateNaissance, :taille, :poids, :statut, :postePrefere, :estPremiereLigne, :commentaire)");
 
-            self::bindParams($joueur, $statement);
+            bindParams($joueur, $statement);
             $statement->execute();
 
             return $connexion->lastInsertId();
@@ -39,7 +44,7 @@ class DAOJoueur {
     }
 
 
-    public static function read(): array {
+    function read(): array {
         try {
             $connexion = getPDO();
             $statement = $connexion->prepare("SELECT * FROM Joueur ORDER BY postePrefere, nom");
@@ -53,7 +58,7 @@ class DAOJoueur {
     }
 
 
-    public function readByNumeroLicense(int $numeroLicense): array {
+    function readByNumeroLicense(int $numeroLicense): array {
         try {
             $connexion = getPDO();
             $statement = $connexion->prepare("SELECT * FROM Joueur WHERE numeroLicense = :numeroLicense");
@@ -68,7 +73,7 @@ class DAOJoueur {
     }
 
 
-    public static function readNonParticiperMatch(int $idMatch): array {
+    function readNonParticiperMatch(int $idMatch): array {
         try {
             $connection = getPDO();
             $statement = $connection->prepare("SELECT * FROM Joueur WHERE idJoueur NOT IN (SELECT idJoueur FROM Participer WHERE idMatch = :idMatch)");
@@ -83,7 +88,7 @@ class DAOJoueur {
         return [];
     }
 
-    public static function update(array $joueur): bool {
+    function update(array $joueur): bool {
         try {
             $connexion = getPDO();
             $statement = $connexion->prepare(
@@ -95,14 +100,14 @@ class DAOJoueur {
             self::bindParams($joueur, $statement);
             $statement->bindParam(':idJoueur', $joueur["idJoueur"]);
 
-            return$statement->execute();
+            return $statement->execute();
         } catch (PDOException $e) {
             echo "Erreur lors de la mise à jour du joueur: " . $e->getMessage();
         }
         return false;
     }
 
-    public static function delete(string $joueur): bool {
+    function delete(string $joueur): bool {
         try {
             $connexion = getPDO();
             $statement = $connexion->prepare("DELETE FROM Joueur WHERE idJoueur = :idJoueur");
@@ -114,7 +119,7 @@ class DAOJoueur {
         return false;
     }
 
-    public static function readById(int $idJoueur): array {
+    function readById(int $idJoueur): array {
         try {
             $connexion = getPDO();
             $statement = $connexion->prepare("SELECT * FROM Joueur WHERE idJoueur = :idJoueur");
@@ -133,7 +138,7 @@ class DAOJoueur {
      * @param bool|PDOStatement $statement
      * @return void
      */
-    public static function bindParams(array $joueur, bool|PDOStatement $statement): void {
+    function bindParams(array $joueur, bool|PDOStatement $statement): void {
         $statement->bindParam(':numeroLicense', $joueur["numeroLicense"]);
         $statement->bindParam(':nom', $joueur["nom"]);
         $statement->bindParam(':prenom', $joueur["prenom"]);
