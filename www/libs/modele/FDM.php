@@ -50,7 +50,7 @@ namespace FDM {
                 $statement->execute();
             }
         } catch (PDOException $e) {
-            echo "Erreur : " . $e->getMessage();
+            echo "Erreur INSERT: " . $e->getMessage();
         }
     }
 
@@ -66,7 +66,25 @@ namespace FDM {
                 $statement->execute();
             }
         } catch (PDOException $e) {
-            echo "Erreur : " . $e->getMessage();
+            echo "Erreur UPDATE: " . $e->getMessage();
+        }
+    }
+
+    function delete(array $feuilles, string $idMatch): void
+    {
+        try {
+            $connexion = getPDO();
+            $statement = $connexion->prepare(
+                "DELETE FROM Participer WHERE idMatch = :idMatch AND idJoueur = :idJoueur");
+
+            foreach ($feuilles as $fdm) {
+                $statement->bindParam(':idMatch', $idMatch);
+                $statement->bindParam(':idJoueur', $fdm["idJoueur"]);
+                $statement->execute();
+            }
+
+        } catch (PDOException $e) {
+            echo "Erreur DELETE: " . $e->getMessage();
         }
     }
 
@@ -85,26 +103,22 @@ namespace FDM {
             }
             return readByMatch($idMatch);
         } catch (PDOException $e) {
-            echo "Erreur : " . $e->getMessage();
+            echo "Erreur NOTES: " . $e->getMessage();
             return [];
         }
     }
 
-    function delete(array $feuilles, string $idMatch): void
+    function deleteMatch(string $idMatch): bool
     {
         try {
             $connexion = getPDO();
             $statement = $connexion->prepare(
-                "DELETE FROM Participer WHERE idMatch = :idMatch AND idJoueur = :idJoueur");
-
-            foreach ($feuilles as $fdm) {
-                $statement->bindParam(':idMatch', $idMatch);
-                $statement->bindParam(':idJoueur', $fdm["idJoueur"]);
-                $statement->execute();
-            }
-
+                "DELETE FROM Participer WHERE idMatch = :idMatch");
+            $statement->bindParam(':idMatch', $idMatch);
+            return $statement->execute();
         } catch (PDOException $e) {
-            echo "Erreur : " . $e->getMessage();
+            echo "Erreur DELETEMATCH: " . $e->getMessage();
+            return false;
         }
     }
 
@@ -115,7 +129,7 @@ namespace FDM {
             $statement->execute();
             return sortFDMs($statement->fetchAll(PDO::FETCH_ASSOC));
         } catch (PDOException $e) {
-            echo "Erreur : " . $e->getMessage();
+            echo "Erreur READ: " . $e->getMessage();
         }
         return [];
     }
@@ -132,7 +146,7 @@ namespace FDM {
             $statement->execute();
             return sortFDMs($statement->fetchAll(PDO::FETCH_ASSOC));
         } catch (PDOException $e) {
-            echo "Erreur : " . $e->getMessage();
+            echo "Erreur READMATCH: " . $e->getMessage();
         }
         return [];
     }
@@ -149,7 +163,7 @@ namespace FDM {
             $statement->execute();
             return sortFDMs($statement->fetchAll(PDO::FETCH_ASSOC));
         } catch (PDOException $e) {
-            echo "Erreur : " . $e->getMessage();
+            echo "Erreur READJOUEUR: " . $e->getMessage();
         }
         return [];
     }
@@ -167,7 +181,7 @@ namespace FDM {
             $statement->execute();
             return sortFDMs($statement->fetchAll(PDO::FETCH_ASSOC));
         } catch (PDOException $e) {
-            echo "Erreur : " . $e->getMessage();
+            echo "Erreur READN&M: " . $e->getMessage();
         }
         return [];
     }
@@ -185,7 +199,7 @@ namespace FDM {
             $row = $statement->fetchAll(PDO::FETCH_ASSOC);
             return $row[0] ? $row[0]['archive'] : false;
         } catch (PDOException $e) {
-            echo "Erreur : " . $e->getMessage();
+            echo "Erreur isARCHIVE: " . $e->getMessage();
         }
         return false;
     }
@@ -201,7 +215,7 @@ namespace FDM {
 
             return $statement->execute();
         } catch (PDOException $e) {
-            echo "Erreur : " . $e->getMessage();
+            echo "Erreur ARCHIVER: " . $e->getMessage();
         }
         return false;
     }
