@@ -1,6 +1,8 @@
 <?php
 require_once "../libs/modele/Match.php";
 
+use function MatchDeRugby\delete, MatchDeRugby\create, MatchDeRugby\read, MatchDeRugby\readById, MatchDeRugby\update;
+
 header("Content-Type: application/json");
 
 //check du jeton avec une requête POST sur l'api d'authentification
@@ -25,28 +27,28 @@ function checkBody(mixed $jsonBody): bool {
 
 if($_SERVER['REQUEST_METHOD'] == 'GET')
     if(isset($_GET["idMatch"]))
-        $message = array("status" => 200, "response" => "Match récupéré avec succès", "data" => MatchDeRugby::readById($_GET["idMatch"]));
+        $message = array("status" => 200, "response" => "Match récupéré avec succès", "data" => readById($_GET["idMatch"]));
      else
-        $message = array("status" => 200, "response" => "Liste des Matchs récupérés avec succès", "data" => MatchDeRugby::read());
+        $message = array("status" => 200, "response" => "Liste des Matchs récupérés avec succès", "data" => read());
 
 else if($_SERVER['REQUEST_METHOD'] == 'POST')
     if(checkBody($jsonBody))
-        $message = array("status" => 201, "response" => "Match créé avec succès", "data" => MatchDeRugby::readById(MatchDeRugby::create($jsonBody)));
+        $message = array("status" => 201, "response" => "Match créé avec succès", "data" => readById(create($jsonBody)));
     else
         $message = array("status" => 400, "response" => "Les paramètres sont invalides");
 
 else if($_SERVER["REQUEST_METHOD"] == 'PUT')
     if (checkBody($jsonBody) && isset($jsonBody["idMatch"]))
-        if (MatchDeRugby::update($jsonBody))
-            $message = array("status" => 200, "response" => "Match modifié avec succès", "data" => MatchDeRugby::readById($jsonBody["idMatch"]));
+        if (update($jsonBody))
+            $message = array("status" => 200, "response" => "Match modifié avec succès", "data" => readById($jsonBody["idMatch"]));
         else
-            $message = array("status" => 200, "response" => "Erreur lors de la modification du Match", "data" => MatchDeRugby::readById($jsonBody["idMatch"]));
+            $message = array("status" => 200, "response" => "Erreur lors de la modification du Match", "data" => readById($jsonBody["idMatch"]));
     else
         $message = array("status" => 400, "response" => "Les paramètres sont invalides");
 
 else if($_SERVER['REQUEST_METHOD'] == 'DELETE')
     if(isset($jsonBody["idMatch"]))
-        $message = array("status" => 200, "response" => "Match supprimé avec succès", "data" => MatchDeRugby::delete($jsonBody["idMatch"]));
+        $message = array("status" => 200, "response" => "Match supprimé avec succès", "data" => delete($jsonBody["idMatch"]));
      else
         $message = array("status" => 400, "response" => "Les paramètres sont invalides");
 else

@@ -1,32 +1,36 @@
 <?php
 
-require_once '../db/db.php';
+namespace MatchDeRugby {
 
-class DAOMatchDeRugby {
+    require_once '../db/db.php';
 
-    public function create(MatchDeRugby $match): void {
+    use DateTime;
+    use Exception;
+    use PDO;
+    use PDOException;
+
+    function create(array $match): string {
         try {
             $connexion = getPDO();
             $statement = $connexion->prepare(
                 "INSERT INTO MatchDeRugby (dateHeure, adversaire, lieu, valider) 
                    VALUES (:dateHeure, :adversaire, :lieu, 0)");
 
-            $dateHeure = $match->getDateHeure()->format('Y-m-d H:i:s');
-            $adversaire = $match->getAdversaire();
-            $lieu = $match->getLieu()->name;
 
-            $statement->bindParam(':dateHeure', $dateHeure);
-            $statement->bindParam(':adversaire', $adversaire);
-            $statement->bindParam(':lieu', $lieu);
+            $statement->bindParam(':dateHeure', $match["dateHeure"]);
+            $statement->bindParam(':adversaire', $match["adversaire"]);
+            $statement->bindParam(':lieu', $match["lieu"]);
 
             $statement->execute();
-            echo "Match créé avec succès\n";
+
+            return $connexion->lastInsertId();
         } catch (PDOException $e) {
             echo "Erreur lors de la création du match: " . $e->getMessage();
+            return "";
         }
     }
 
-    public static function read(): array {
+    function read(): array {
         try {
             $connexion = getPDO();
             $statement = $connexion->prepare("SELECT * FROM MatchDeRugby ORDER BY dateHeure");
@@ -39,7 +43,7 @@ class DAOMatchDeRugby {
         return [];
     }
 
-    public static function readById(int $idMatch): array {
+    function readById(string $idMatch): array {
         try {
             $connexion = getPDO();
             $statement = $connexion->prepare("SELECT * FROM MatchDeRugby WHERE idMatch = :idMatch");
@@ -52,7 +56,7 @@ class DAOMatchDeRugby {
         return [];
     }
 
-    public function readByDateHeure(DateTime $dateHeure): array {
+    function readByDateHeure(DateTime $dateHeure): array {
         $dateHeure = $dateHeure->format('Y-m-d H:i:s');
         try {
             $connexion = getPDO();
@@ -67,71 +71,61 @@ class DAOMatchDeRugby {
         return [];
     }
 
-    public function update(MatchDeRugby $match): void {
+    function update(array $match): bool {
         try {
             $connexion = getPDO();
             $statement = $connexion->prepare(
                 "UPDATE MatchDeRugby SET dateHeure = :dateHeure, adversaire = :adversaire, lieu = :lieu
                    WHERE idMatch = :idMatch");
 
-            $dateHeure = $match->getDateHeure()->format('Y-m-d H:i:s');
-            $adversaire = $match->getAdversaire();
-            $lieu = $match->getLieu()->name;
-            $id = $match->getidMatch();
 
-            $statement->bindParam(':dateHeure', $dateHeure);
-            $statement->bindParam(':adversaire', $adversaire);
-            $statement->bindParam(':lieu', $lieu);
-            $statement->bindParam(':idMatch',$id);
+            $statement->bindParam(':dateHeure', $match["dateHeure"]);
+            $statement->bindParam(':adversaire', $match["adversaire"]);
+            $statement->bindParam(':lieu', $match["lieu"]);
+            $statement->bindParam(':idMatch',$match["idMatch"]);
 
-            $statement->execute();
-            echo "Match mis à jour avec succès\n";
+            return $statement->execute();
         } catch (PDOException $e) {
             echo "Erreur lors de la mise à jour du match: " . $e->getMessage();
-            die();
+            return false;
         }
     }
 
-    public function delete(MatchDeRugby $matchDeRugby): void {
+    function delete(int $idMatch): bool {
         try {
             $connexion = getPDO();
             $statement = $connexion->prepare("DELETE FROM MatchDeRugby WHERE idMatch = :idMatch");
-            $id = $matchDeRugby->getIdMatch();
-            $statement->bindParam(':idMatch', $id);
-            $statement->execute();
-            $statement = $connexion->prepare("DELETE FROM Participer WHERE idMatch = :idMatch");
-            $statement->bindParam(':idMatch', $id);
-            $statement->execute();
-            echo "Match supprimé avec succès\n";
+            $statement->bindParam(':idMatch', $idMatch);
+
+            return $statement->execute();
         } catch (PDOException $e) {
             echo "Erreur lors de la suppression du match: " . $e->getMessage();
+            return false;
         }
     }
 
-    public function readMatchWithResultat(): array
+    function readMatchWithResultat(): array
     {
         try {
             $connexion = getPDO();
             $statement = $connexion->prepare("SELECT * FROM MatchDeRugby WHERE resultat is not null ORDER BY dateHeure");
             $statement->execute();
             return $statement->fetchAll(PDO::FETCH_ASSOC);
-        } catch (Exception $e) {
+        } catch (PDOException $e) {
             echo "Erreur lors de la lecture des matches: " . $e->getMessage();
         }
         return [];
     }
 
-    public function validerMatch(MatchDeRugby $match): void
+    function validerMatch(array $match): void
     {
         try {
             $connexion = getPDO();
             $statement = $connexion->prepare("UPDATE MatchDeRugby SET resultat = :resultat, valider := 1 WHERE idMatch = :idMatch");
 
-            $idMatch = $match->getIdMatch();
-            $resultat = $match->getResultat()->value;
 
-            $statement->bindParam(':idMatch', $idMatch);
-            $statement->bindParam(':resultat', $resultat);
+            $statement->bindParam(':idMatch', $match["idMatch"]);
+            $statement->bindParam(':resultat', $match["resultat"]);
 
             $statement->execute();
             echo "Match mis à jour avec succès\n";
