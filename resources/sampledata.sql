@@ -2,7 +2,7 @@ DELETE FROM Participer;
 DELETE FROM Joueur;
 DELETE FROM MatchDeRugby;
 
-INSERT INTO Joueur (numeroLicense, nom, prenom, dateNaissance, taille, poids, statut, postePrefere, estPremiereLigne, commentaire, url)
+INSERT INTO Joueur (numeroLicence, nom, prenom, dateNaissance, taille, poids, statut, postePrefere, estPremiereLigne, commentaire, url)
 VALUES
 -- PILIERs
 (2001, 'Atonio', 'Uini', '1990-03-26', 196, 145, 'ACTIF', 'PILIER', TRUE, 'Puissance brute et PILIER expérimenté.', 'atonio.png'),
