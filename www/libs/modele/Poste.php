@@ -14,13 +14,13 @@ enum Poste: string
     case AILIER = "Ailier";
     case ARRIERE = "Arrière";
 
-    public static function tryFromName(string $name): ?self
+    public static function existFromName(string $name): bool
     {
         foreach (self::cases() as $case) {
             if ($case->name === $name) {
-                return $case;
+                return true;
             }
         }
-        return null; // Return null if no match is found
+        return false; // Return null if no match is found
     }
 }

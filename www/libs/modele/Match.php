@@ -117,7 +117,7 @@ namespace MatchDeRugby {
         return [];
     }
 
-    function validerMatch(array $match): void
+    function validerMatch(array $match): bool
     {
         try {
             $connexion = getPDO();
@@ -127,10 +127,11 @@ namespace MatchDeRugby {
             $statement->bindParam(':idMatch', $match["idMatch"]);
             $statement->bindParam(':resultat', $match["resultat"]);
 
-            $statement->execute();
+            return $statement->execute();
             echo "Match mis à jour avec succès\n";
         } catch (PDOException $e) {
             echo "Erreur lors de la mise à jour du match: " . $e->getMessage();
+            return false;
         }
     }
 }

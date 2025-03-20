@@ -1,8 +1,13 @@
 <?php
 require_once "../libs/modele/Joueur.php";
 require_once "../libs/modele/Poste.php";
+require_once "../libs/modele/Resultat.php";
+require_once "../libs/modele/Statut.php";
 
 use libs\modele\Poste;
+use libs\modele\Resultat;
+use libs\modele\Statut;
+
 use function Joueur\update,Joueur\delete,Joueur\create,Joueur\readById,Joueur\read;
 
 header("Content-Type: application/json");
@@ -20,13 +25,27 @@ $jsonBody = json_decode(file_get_contents('php://input'), true);
  * @param mixed $jsonBody
  * @return bool
  */
-function checkBody(mixed $jsonBody): bool
-{
+
+function checkFields(mixed $jsonBody) : bool{
     return isset($jsonBody["numeroLicense"]) && isset($jsonBody["nom"]) && isset($jsonBody["prenom"]) && isset($jsonBody["dateNaissance"]) &&
         isset($jsonBody["taille"]) && isset($jsonBody["poids"]) && isset($jsonBody["statut"]) && isset($jsonBody["postePrefere"]) &&
-        isset($jsonBody["estPremiereLigne"]) && isset($jsonBody["commentaire"]) && isset($jsonBody["url"])
-        && Poste::tryFromName($jsonBody["postePrefere"]) != null;
+        isset($jsonBody["estPremiereLigne"]) && isset($jsonBody["commentaire"]) && isset($jsonBody["url"]);
 }
+
+function checkValues(mixed $jsonBody) : bool {
+    return Poste::existFromName($jsonBody["postePrefere"]) &&
+        Statut::existFrom($jsonBody["statut"]) &&
+        is_numeric($jsonBody["taille"]) &&
+        is_numeric($jsonBody["poids"]) &&
+        is_bool($jsonBody["estPremiereLigne"]);
+}
+
+function checkBody(mixed $jsonBody): bool
+{
+    return checkFields($jsonBody) && checkValues($jsonBody);
+}
+
+
 
 if($_SERVER['REQUEST_METHOD'] == 'GET') {
     if(isset($_GET["idJoueur"])){
