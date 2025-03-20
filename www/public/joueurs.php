@@ -1,6 +1,8 @@
 <?php
 require_once "../libs/modele/Joueur.php";
+require_once "../libs/modele/Poste.php";
 
+use libs\modele\Poste;
 use function Joueur\update,Joueur\delete,Joueur\create,Joueur\readById,Joueur\read;
 
 header("Content-Type: application/json");
@@ -22,7 +24,8 @@ function checkBody(mixed $jsonBody): bool
 {
     return isset($jsonBody["numeroLicense"]) && isset($jsonBody["nom"]) && isset($jsonBody["prenom"]) && isset($jsonBody["dateNaissance"]) &&
         isset($jsonBody["taille"]) && isset($jsonBody["poids"]) && isset($jsonBody["statut"]) && isset($jsonBody["postePrefere"]) &&
-        isset($jsonBody["estPremiereLigne"]) && isset($jsonBody["commentaire"]) && isset($jsonBody["url"]);
+        isset($jsonBody["estPremiereLigne"]) && isset($jsonBody["commentaire"]) && isset($jsonBody["url"])
+        && Poste::tryFromName($jsonBody["postePrefere"]) != null;
 }
 
 if($_SERVER['REQUEST_METHOD'] == 'GET') {
