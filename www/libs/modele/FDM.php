@@ -42,7 +42,7 @@ namespace FDM {
         try {
             $connexion = getPDO();
             $statement = $connexion->prepare(
-                "INSERT INTO Participer (idMatch, idJoueur, estTitulaire, numero) 
+                "INSERT INTO Participer (idMatch, idJoueur, estTitulaire, numero)
              VALUES (:idMatch, :idJoueur, :estTitulaire, :numero)");
 
             foreach ($feuilles as $key => $fdm) {
@@ -197,7 +197,15 @@ namespace FDM {
 
             $statement->execute();
             $row = $statement->fetchAll(PDO::FETCH_ASSOC);
-            return $row[0] ? $row[0]['archive'] : false;
+            $connexion = getPDO();
+            $statement = $connexion->prepare(
+                "SELECT archive FROM Participer WHERE idMatch = :idMatch");
+
+            $statement->bindParam(':idMatch', $idMatch);
+
+            $statement->execute();
+            $row = $statement->fetchAll(PDO::FETCH_ASSOC);
+            return ($row !== false && isset($row['archive'])) ? (bool)$row['archive'] : false;
         } catch (PDOException $e) {
             echo "Erreur isARCHIVE: " . $e->getMessage();
         }
