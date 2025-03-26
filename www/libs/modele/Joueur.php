@@ -110,9 +110,11 @@ namespace Joueur {
     function delete(string $joueur): bool {
         try {
             $connexion = getPDO();
-            $statement = $connexion->prepare("DELETE FROM Joueur WHERE idJoueur = :idJoueur");
-            $statement->bindParam(':idJoueur', $joueur);
-            return $statement->execute();
+            $statementParticiper = $connexion->prepare("DELETE FROM Participer WHERE idJoueur = :idJoueur");
+            $statementParticiper->bindParam(':idJoueur', $joueur);
+            $statementJoueur = $connexion->prepare("DELETE FROM Joueur WHERE idJoueur = :idJoueur");
+            $statementJoueur->bindParam(':idJoueur', $joueur);
+            return $statementParticiper->execute() && $statementJoueur->execute();
         } catch (PDOException $e) {
             echo "Erreur lors de la suppression du joueur: " . $e->getMessage();
         }
