@@ -30,8 +30,8 @@ namespace Joueur {
         try {
             $connexion = getPDO();
             $statement = $connexion->prepare(
-                "INSERT INTO Joueur (numeroLicense, nom, prenom, dateNaissance, taille, poids, statut, postePrefere, estPremiereLigne, commentaire) 
-                   VALUES (:numeroLicense, :nom, :prenom, :dateNaissance, :taille, :poids, :statut, :postePrefere, :estPremiereLigne, :commentaire)");
+                "INSERT INTO Joueur (numeroLicence, nom, prenom, dateNaissance, taille, poids, statut, postePrefere, estPremiereLigne, commentaire) 
+                   VALUES (:numeroLicence, :nom, :prenom, :dateNaissance, :taille, :poids, :statut, :postePrefere, :estPremiereLigne, :commentaire)");
 
             bindParams($joueur, $statement);
             $statement->execute();
@@ -58,11 +58,11 @@ namespace Joueur {
     }
 
 
-    function readByNumeroLicense(int $numeroLicense): array {
+    function readBynumeroLicence(int $numeroLicence): array {
         try {
             $connexion = getPDO();
-            $statement = $connexion->prepare("SELECT * FROM Joueur WHERE numeroLicense = :numeroLicense");
-            $statement->bindParam(':numeroLicense', $numeroLicense);
+            $statement = $connexion->prepare("SELECT * FROM Joueur WHERE numeroLicence = :numeroLicence");
+            $statement->bindParam(':numeroLicence', $numeroLicence);
             $statement->execute();
 
             return $statement->fetchAll(PDO::FETCH_ASSOC);
@@ -94,7 +94,7 @@ namespace Joueur {
             $statement = $connexion->prepare(
                 "UPDATE Joueur SET taille = :taille, poids = :poids, statut = :statut,
                     postePrefere = :postePrefere, estPremiereLigne = :estPremiereLigne,
-                    numeroLicense = :numeroLicense, nom = :nom, prenom = :prenom, dateNaissance = :dateNaissance, commentaire= :commentaire
+                    numeroLicence = :numeroLicence, nom = :nom, prenom = :prenom, dateNaissance = :dateNaissance, commentaire= :commentaire
               WHERE idJoueur = :idJoueur"
             );
             bindParams($joueur, $statement);
@@ -121,7 +121,7 @@ namespace Joueur {
         return false;
     }
 
-    function readById(int $idJoueur): array {
+    function readById(string $idJoueur): array {
         try {
             $connexion = getPDO();
             $statement = $connexion->prepare("SELECT * FROM Joueur WHERE idJoueur = :idJoueur");
@@ -141,7 +141,7 @@ namespace Joueur {
      * @return void
      */
     function bindParams(array $joueur, bool|PDOStatement $statement): void {
-        $statement->bindParam(':numeroLicense', $joueur["numeroLicense"]);
+        $statement->bindParam(':numeroLicence', $joueur["numeroLicence"]);
         $statement->bindParam(':nom', $joueur["nom"]);
         $statement->bindParam(':prenom', $joueur["prenom"]);
         $statement->bindParam(':dateNaissance', $joueur["dateNaissance"]);

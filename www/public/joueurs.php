@@ -10,7 +10,7 @@ use libs\modele\Statut;
 
 use function Joueur\update,Joueur\delete,Joueur\create,Joueur\readById,Joueur\read;
 
-header("Content-Type: application/json");
+header('Content-Type: application/json; charset=utf-8');
 header('Cross-Origin-Resource-Policy: *');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, PATCH, OPTIONS');
@@ -31,7 +31,7 @@ $jsonBody = json_decode(file_get_contents('php://input'), true);
  */
 
 function checkFields(mixed $jsonBody) : bool{
-    return isset($jsonBody["numeroLicense"]) && isset($jsonBody["nom"]) && isset($jsonBody["prenom"]) && isset($jsonBody["dateNaissance"]) &&
+    return isset($jsonBody["numeroLicence"]) && isset($jsonBody["nom"]) && isset($jsonBody["prenom"]) && isset($jsonBody["dateNaissance"]) &&
         isset($jsonBody["taille"]) && isset($jsonBody["poids"]) && isset($jsonBody["statut"]) && isset($jsonBody["postePrefere"]) &&
         isset($jsonBody["estPremiereLigne"]) && isset($jsonBody["commentaire"]) && isset($jsonBody["url"]);
 }
@@ -40,8 +40,7 @@ function checkValues(mixed $jsonBody) : bool {
     return Poste::existFromName($jsonBody["postePrefere"]) &&
         Statut::existFrom($jsonBody["statut"]) &&
         is_numeric($jsonBody["taille"]) &&
-        is_numeric($jsonBody["poids"]) &&
-        is_bool($jsonBody["estPremiereLigne"]);
+        is_numeric($jsonBody["poids"]) && ($jsonBody["estPremiereLigne"] == 0 || $jsonBody["estPremiereLigne"] == 1);
 }
 
 function checkBody(mixed $jsonBody): bool
@@ -88,6 +87,6 @@ else if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 else {
     $message = array("status" => 405, "response" => "Méthode non autorisée");
 }
-
+//var_dump($message["data"]);
 http_response_code($message["status"]);
 echo json_encode($message);
