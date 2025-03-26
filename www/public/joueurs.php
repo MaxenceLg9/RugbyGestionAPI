@@ -11,6 +11,10 @@ use libs\modele\Statut;
 use function Joueur\update,Joueur\delete,Joueur\create,Joueur\readById,Joueur\read;
 
 header("Content-Type: application/json");
+header('Cross-Origin-Resource-Policy: *');
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, PATCH, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type, Authorization');
 
 //check du jeton avec une requête POST sur l'api d'authentification
 /*
@@ -77,6 +81,9 @@ else if($_SERVER['REQUEST_METHOD'] == 'DELETE') {
     } else {
         $message = array("status" => 400, "response" => "Les paramètres sont invalides");
     }
+}
+else if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+    $message = array("status" => 200, "response" => "Options ok");
 }
 else {
     $message = array("status" => 405, "response" => "Méthode non autorisée");

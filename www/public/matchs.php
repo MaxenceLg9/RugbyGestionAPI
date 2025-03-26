@@ -5,6 +5,10 @@ use libs\modele\Resultat;
 use function MatchDeRugby\delete, MatchDeRugby\create, MatchDeRugby\read, MatchDeRugby\readById, MatchDeRugby\update,MatchDeRugby\validerMatch;
 
 header("Content-Type: application/json");
+header('Cross-Origin-Resource-Policy: *');
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, PATCH, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type, Authorization');
 
 //check du jeton avec une requête POST sur l'api d'authentification
 /*
@@ -61,6 +65,9 @@ else if($_SERVER['REQUEST_METHOD'] == 'DELETE')//suppression du match
         $message = array("status" => 200, "response" => "Match supprimé avec succès", "data" => delete($jsonBody["idMatch"]));
      else
         $message = array("status" => 400, "response" => "Les paramètres sont invalides");
+else if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+    $message = array("status" => 200, "response" => "Options ok");
+}
 else
     $message = array("status" => 405, "response" => "Méthode non autorisée");
 
