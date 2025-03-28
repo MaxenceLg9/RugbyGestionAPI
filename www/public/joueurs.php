@@ -35,7 +35,7 @@ function checkFields(mixed $jsonBody) : bool{
 
 function checkValues(mixed $jsonBody) : bool {
     return Poste::existFromName($jsonBody["postePrefere"]) &&
-        Statut::existFrom($jsonBody["statut"]) &&
+        Statut::existFromName($jsonBody["statut"]) &&
         is_numeric($jsonBody["taille"]) &&
         is_numeric($jsonBody["poids"]) && ($jsonBody["estPremiereLigne"] == 0 || $jsonBody["estPremiereLigne"] == 1) &&
         checkDateNaissance($jsonBody["dateNaissance"]);
@@ -103,6 +103,7 @@ foreach ($message["data"] as &$joueurs){
     else
         $joueurs["url"] = "http://rugbygestion.api/img/joueurs/".$joueurs["url"];
     $joueurs["postePrefere"] = Poste::fromName($joueurs["postePrefere"])->value;
+    $joueurs["statut"] = Statut::fromName($joueurs["statut"])->value;
     $date = DateTime::createFromFormat('Y-m-d', $joueurs["dateNaissance"]);
     $joueurs["dateNaissance"] = $date->format('d-m-Y');
     $joueurs["estPremiereLigne"] = ($joueurs["estPremiereLigne"] == 0) ? "Non" : "Oui";

@@ -2,13 +2,28 @@
 
 enum Statut: string
 {
-    case ACTIF = 'ACTIF';
-    case BLESSE = 'BLESSE';
-    case SUSPENDU = 'SUSPENDU';
-    case ABSENT = 'ABSENT';
+    case ACTIF = 'Actif';
+    case BLESSE = 'Blessé';
+    case SUSPENDU = 'Suspendu';
+    case ABSENT = 'Absent';
 
-    public static function existFrom(string $name): bool
+    public static function existFromName(string $name): bool
     {
-        return self::tryFrom($name) != null; // Return null if no match is found
+        foreach (self::cases() as $case) {
+            if ($case->name === $name) {
+                return true;
+            }
+        }
+        return false; // Return null if no match is found
+    }
+
+    public static function fromName(string $name): ?Statut
+    {
+        foreach (self::cases() as $case) {
+            if ($case->name === $name) {
+                return $case;
+            }
+        }
+        return null;
     }
 }

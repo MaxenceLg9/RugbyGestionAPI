@@ -2,12 +2,27 @@
 
 enum Resultat: string
 {
-    case VICTOIRE = 'VICTOIRE';
-    case DEFAITE = 'DEFAITE';
-    case NUL = 'NUL';
+    case VICTOIRE = 'Victoire';
+    case DEFAITE = 'Defaite';
+    case NUL = 'Nul';
 
-    public static function existFrom(string $name): bool
+    public static function existFromName(string $name): bool
     {
-        return self::tryFrom($name) != null; // Return null if no match is found
+        foreach (self::cases() as $case) {
+            if ($case->name === $name) {
+                return true;
+            }
+        }
+        return false; // Return null if no match is found
+    }
+
+    public static function fromName(string $name): ?Resultat
+    {
+        foreach (self::cases() as $case) {
+            if ($case->name === $name) {
+                return $case;
+            }
+        }
+        return null;
     }
 }

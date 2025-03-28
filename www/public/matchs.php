@@ -53,7 +53,7 @@ else if($_SERVER["REQUEST_METHOD"] == 'PUT')//modifier les infos du match
         $message = array("status" => 400, "response" => "Les paramètres sont invalides");
 
 else if($_SERVER["REQUEST_METHOD"] == 'PATCH')//validation du résultat
-    if (isset($jsonBody["idMatch"]) && isset($jsonBody["resultat"]) && Resultat::existFrom($jsonBody["resultat"]))
+    if (isset($jsonBody["idMatch"]) && isset($jsonBody["resultat"]) && Resultat::existFromName($jsonBody["resultat"]))
         if (validerMatch($jsonBody))
             $message = array("status" => 200, "response" => "Match modifié avec succès", "data" => readById($jsonBody["idMatch"]));
         else
