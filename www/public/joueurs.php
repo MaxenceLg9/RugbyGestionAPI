@@ -57,7 +57,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET') {
         $message = array("status" => 200, "response" => "Liste des joueurs récupérés avec succès", "data" => read());
     }
     foreach ($message["data"] as &$joueurs){
-        $url = $_SERVER["DOCUMENT_ROOT"]."/img/data/joueurs/".$joueurs["url"];
+        $url = $_SERVER["DOCUMENT_ROOT"]."/img/joueurs/".$joueurs["url"];
         if(!file_exists($url))
             $joueurs["url"] = "http://rugbygestion.api/img/data/default.png";
         else
