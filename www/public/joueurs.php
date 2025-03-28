@@ -4,9 +4,6 @@ require_once "../libs/modele/Poste.php";
 require_once "../libs/modele/Resultat.php";
 require_once "../libs/modele/Statut.php";
 
-use libs\modele\Poste;
-use libs\modele\Resultat;
-use libs\modele\Statut;
 
 use function Joueur\update,Joueur\delete,Joueur\create,Joueur\readById,Joueur\read;
 

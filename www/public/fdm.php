@@ -1,6 +1,6 @@
 <?php
 
-require_once "../libs/modele/FDM.php";
+require_once $_SERVER["DOCUMENT_ROOT"]."../libs/modele/FDM.php";
 
 use function FDM\isArchiveFDM;
 use function FDM\readByNumeroAndMatch,FDM\read,FDM\readByMatch,FDM\readByJoueur,FDM\fillFDM,FDM\archiver,FDM\deleteMatch,\FDM\setNotes;

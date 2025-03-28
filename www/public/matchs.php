@@ -1,7 +1,8 @@
 <?php
-require_once "../libs/modele/Match.php";
+require_once $_SERVER["DOCUMENT_ROOT"]."../libs/modele/Match.php";
+require_once $_SERVER["DOCUMENT_ROOT"]."../libs/modele/Resultat.php";
 
-use libs\modele\Resultat;
+
 use function MatchDeRugby\delete, MatchDeRugby\create, MatchDeRugby\read, MatchDeRugby\readById, MatchDeRugby\update,MatchDeRugby\validerMatch;
 
 header("Content-Type: application/json");
