@@ -42,8 +42,8 @@ namespace FDM {
         try {
             $connexion = getPDO();
             $statement = $connexion->prepare(
-                "INSERT INTO Participer (idMatch, idJoueur, estTitulaire, numero)
-             VALUES (:idMatch, :idJoueur, :estTitulaire, :numero)");
+                "INSERT INTO Participer (idMatch, idJoueur, estTitulaire, numero,note)
+             VALUES (:idMatch, :idJoueur, :estTitulaire, :numero,-1)");
 
             foreach ($feuilles as $key => $fdm) {
                 bindParams($statement, $fdm, $key, $idMatch);
