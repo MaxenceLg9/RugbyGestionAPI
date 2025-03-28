@@ -96,5 +96,6 @@ foreach ($message["data"] as &$joueurs){
         $joueurs["url"] = "http://rugbygestion.api/img/data/default.png";
     else
         $joueurs["url"] = "http://rugbygestion.api/img/joueurs/".$joueurs["url"];
+    $joueurs["postePrefere"] = Poste::fromName($joueurs["postePrefere"])->value;
 }
 echo json_encode($message);

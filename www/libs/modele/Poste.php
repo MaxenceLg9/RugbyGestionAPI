@@ -22,4 +22,14 @@ enum Poste: string
         }
         return false; // Return null if no match is found
     }
+
+    public static function fromName(string $name): ?Poste
+    {
+        foreach (self::cases() as $case) {
+            if ($case->name === $name) {
+                return $case;
+            }
+        }
+        return null;
+    }
 }
