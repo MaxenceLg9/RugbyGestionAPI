@@ -56,6 +56,13 @@ if($_SERVER['REQUEST_METHOD'] == 'GET') {
     } else {
         $message = array("status" => 200, "response" => "Liste des joueurs récupérés avec succès", "data" => read());
     }
+    foreach ($message["data"] as &$joueurs){
+        $url = $_SERVER["DOCUMENT_ROOT"]."/img/data/joueurs/".$joueurs["url"];
+        if(!file_exists($url))
+            $joueurs["url"] = "http://rugbygestion.api/img/data/default.png";
+        else
+            $joueurs["url"] = "http://rugbygestion.api/img/joueurs/".$joueurs["url"];
+    }
 }
 else if($_SERVER['REQUEST_METHOD'] == 'POST') {
     if(checkBody($jsonBody)){
