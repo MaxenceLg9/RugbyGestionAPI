@@ -53,13 +53,6 @@ if($_SERVER['REQUEST_METHOD'] == 'GET') {
     } else {
         $message = array("status" => 200, "response" => "Liste des joueurs récupérés avec succès", "data" => read());
     }
-    foreach ($message["data"] as &$joueurs){
-        $url = $_SERVER["DOCUMENT_ROOT"]."/img/joueurs/".$joueurs["url"];
-        if(!file_exists($url))
-            $joueurs["url"] = "http://rugbygestion.api/img/data/default.png";
-        else
-            $joueurs["url"] = "http://rugbygestion.api/img/joueurs/".$joueurs["url"];
-    }
 }
 else if($_SERVER['REQUEST_METHOD'] == 'POST') {
     if(checkBody($jsonBody)){
@@ -80,7 +73,10 @@ else if($_SERVER["REQUEST_METHOD"] == 'PUT') {
 }
 else if($_SERVER['REQUEST_METHOD'] == 'DELETE') {
     if(isset($jsonBody["idJoueur"])){
-        $message = array("status" => 200, "response" => "Joueur supprimé avec succès", "data" => delete($jsonBody["idJoueur"]));
+        if(delete($jsonBody["idJoueur"]))
+            $message = array("status" => 200, "response" => "Joueur supprimé avec succès", "data" => []);
+        else
+            $message = array("status" => 200, "response" => "Erreur lors de la suppression du joueur", "data" => []);
     } else {
         $message = array("status" => 400, "response" => "Les paramètres sont invalides");
     }
@@ -93,4 +89,12 @@ else {
 }
 //var_dump($message["data"]);
 http_response_code($message["status"]);
+
+foreach ($message["data"] as &$joueurs){
+    $url = $_SERVER["DOCUMENT_ROOT"]."/img/joueurs/".$joueurs["url"];
+    if(!file_exists($url))
+        $joueurs["url"] = "http://rugbygestion.api/img/data/default.png";
+    else
+        $joueurs["url"] = "http://rugbygestion.api/img/joueurs/".$joueurs["url"];
+}
 echo json_encode($message);

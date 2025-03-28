@@ -1,6 +1,5 @@
 <?php
 
-namespace libs\modele;
 enum Poste: string
 {
     case PILIER = 'Pilier';

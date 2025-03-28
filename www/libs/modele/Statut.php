@@ -1,6 +1,5 @@
 <?php
 
-namespace libs\modele;
 enum Statut: string
 {
     case ACTIF = 'ACTIF';
