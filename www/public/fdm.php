@@ -1,9 +1,10 @@
 <?php
 
 require_once $_SERVER["DOCUMENT_ROOT"]."../libs/modele/FDM.php";
+require_once $_SERVER["DOCUMENT_ROOT"]."../libs/modele/Match.php";
 
-use function FDM\isArchiveFDM;
-use function FDM\readByNumeroAndMatch,FDM\read,FDM\readByMatch,FDM\readByJoueur,FDM\fillFDM,FDM\archiver,FDM\deleteMatch,\FDM\setNotes;
+use function MatchDeRugby\isArchiveMatch,MatchDeRugby\archiver;
+use function FDM\readByNumeroAndMatch,FDM\read,FDM\readByMatch,FDM\readByJoueur,FDM\fillFDM,FDM\deleteMatch,\FDM\setNotes;
 
 header("Content-Type: application/json");
 header('Cross-Origin-Resource-Policy: *');
@@ -68,7 +69,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET') {
 //creer, modifier, supprimer les liaisons entre un joueur et un match
 else if($_SERVER['REQUEST_METHOD'] == 'POST') {
     if(checkPOSTBody($jsonBody)){
-        if(isArchiveFDM($jsonBody["idMatch"]))
+        if(isArchiveMatch($jsonBody["idMatch"]))
             $message = array("status" => 422, "response" => "Impossible de mettre à jour la feuille de match : validée", "data" => []);
         else
             $message = array("status" => 201, "response" => "Feuille de Match créé avec succès", "data" => fillFDM($jsonBody));
@@ -84,7 +85,7 @@ else if($_SERVER["REQUEST_METHOD"] == 'PUT') {
 }
 else if($_SERVER["REQUEST_METHOD"] == 'PATCH') {
     if(checkPATCHBody($jsonBody)){
-        if(!isArchiveFDM($jsonBody["idMatch"]))
+        if(!isArchiveMatch($jsonBody["idMatch"]))
             $message = array("status" => 422, "response" => "Impossible de mettre des notes car la feuille de match n'est pas validée", "data" => []);
         else
             $message = array("status" => 200, "response" => "Feuille de Match modifié avec succès", "data" => setNotes($jsonBody["feuilles"],$jsonBody["idMatch"]));

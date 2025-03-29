@@ -13,8 +13,8 @@ namespace MatchDeRugby {
         try {
             $connexion = getPDO();
             $statement = $connexion->prepare(
-                "INSERT INTO MatchDeRugby (dateHeure, adversaire, lieu, valider) 
-                   VALUES (:dateHeure, :adversaire, :lieu, 0)");
+                "INSERT INTO MatchDeRugby (dateHeure, adversaire, lieu, valider, archive) 
+                   VALUES (:dateHeure, :adversaire, :lieu, 0, 0)");
 
 
             $statement->bindParam(':dateHeure', $match["dateHeure"]);
@@ -89,6 +89,40 @@ namespace MatchDeRugby {
             echo "Erreur lors de la mise à jour du match: " . $e->getMessage();
             return false;
         }
+    }
+
+    function isArchiveMatch(int $idMatch): bool
+    {
+        try {
+            $connexion = getPDO();
+            $statement = $connexion->prepare(
+                "SELECT archive FROM MatchDeRugby WHERE idMatch = :idMatch");
+
+            $statement->bindParam(':idMatch', $idMatch);
+
+            $statement->execute();
+            $row = $statement->fetchAll(PDO::FETCH_ASSOC);
+            return ($row !== false && isset($row['archive'])) ? (bool)$row['archive'] : false;
+        } catch (PDOException $e) {
+            echo "Erreur isARCHIVE: " . $e->getMessage();
+        }
+        return false;
+    }
+
+    function archiver(string $idMatch): bool
+    {
+        try {
+            $connexion = getPDO();
+            $statement = $connexion->prepare(
+                "UPDATE MatchDeRugby SET archive = 1 WHERE idMatch = :idMatch");
+
+            $statement->bindParam(':idMatch', $idMatch);
+
+            return $statement->execute();
+        } catch (PDOException $e) {
+            echo "Erreur ARCHIVER: " . $e->getMessage();
+        }
+        return false;
     }
 
     function delete(int $idMatch): bool {

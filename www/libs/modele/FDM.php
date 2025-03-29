@@ -186,48 +186,6 @@ namespace FDM {
         return [];
     }
 
-    function isArchiveFDM(int $idMatch): bool
-    {
-        try {
-            $connexion = getPDO();
-            $statement = $connexion->prepare(
-                "SELECT archive FROM Participer WHERE idMatch = :idMatch");
-
-            $statement->bindParam(':idMatch', $idMatch);
-
-            $statement->execute();
-            $row = $statement->fetchAll(PDO::FETCH_ASSOC);
-            $connexion = getPDO();
-            $statement = $connexion->prepare(
-                "SELECT archive FROM Participer WHERE idMatch = :idMatch");
-
-            $statement->bindParam(':idMatch', $idMatch);
-
-            $statement->execute();
-            $row = $statement->fetchAll(PDO::FETCH_ASSOC);
-            return ($row !== false && isset($row['archive'])) ? (bool)$row['archive'] : false;
-        } catch (PDOException $e) {
-            echo "Erreur isARCHIVE: " . $e->getMessage();
-        }
-        return false;
-    }
-
-    function archiver(string $idMatch): bool
-    {
-        try {
-            $connexion = getPDO();
-            $statement = $connexion->prepare(
-                "UPDATE Participer SET archive = 1 WHERE idMatch = :idMatch");
-
-            $statement->bindParam(':idMatch', $idMatch);
-
-            return $statement->execute();
-        } catch (PDOException $e) {
-            echo "Erreur ARCHIVER: " . $e->getMessage();
-        }
-        return false;
-    }
-
     function sortFDMs(array $fdms): array {
         $sortedFDM = [];
         foreach ($fdms as $fdm) {

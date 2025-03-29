@@ -41,7 +41,8 @@ CREATE TABLE IF NOT EXISTS MatchDeRugby (
     adversaire VARCHAR(50) NOT NULL,
     lieu ENUM('DOMICILE', 'EXTERIEUR') NOT NULL,
     resultat ENUM('VICTOIRE', 'DEFAITE', 'NUL') NULL,
-    valider BOOLEAN NOT NULL
+    valider BOOLEAN NOT NULL,
+    archive BOOLEAN NOT NULL
     );
 
 CREATE TABLE IF NOT EXISTS Participer (
@@ -50,7 +51,6 @@ CREATE TABLE IF NOT EXISTS Participer (
     estTitulaire BOOLEAN NOT NULL,
     numero INT NOT NULL,
     note FLOAT NULL,
-    archive BOOLEAN NULL,
     PRIMARY KEY (idMatch, numero),
     FOREIGN KEY (idMatch) REFERENCES MatchDeRugby(idMatch),
     FOREIGN KEY (idJoueur) REFERENCES Joueur(idJoueur)

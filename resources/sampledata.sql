@@ -73,21 +73,21 @@ VALUES
 
 
 
-INSERT INTO MatchDeRugby (dateHeure, adversaire, lieu, resultat, valider)
+INSERT INTO MatchDeRugby (dateHeure, adversaire, lieu, resultat, valider,archive)
 VALUES
-    ('2025-02-03 15:00:00', 'Pays de Galles', 'DOMICILE', 'VICTOIRE', TRUE),
-    ('2025-02-10 17:30:00', 'Irlande', 'EXTERIEUR', NULL, FALSE),
-    ('2025-03-02 16:00:00', 'Ecosse', 'DOMICILE', NULL, FALSE),
-    ('2025-03-09 18:00:00', 'Angleterre', 'EXTERIEUR', NULL, FALSE),
-    ('2025-03-16 20:45:00', 'Italie', 'DOMICILE', NULL, FALSE),
-    ('2024-11-25 15:00:00', 'Australie', 'EXTERIEUR', 'VICTOIRE', TRUE),
-    ('2024-10-30 20:00:00', 'Argentine', 'DOMICILE', 'VICTOIRE', TRUE),
-    ('2024-08-15 19:00:00', 'Fidji', 'EXTERIEUR', 'VICTOIRE', TRUE);
+    ('2025-02-03 15:00:00', 'Pays de Galles', 'DOMICILE', 'VICTOIRE', TRUE,TRUE),
+    ('2025-02-10 17:30:00', 'Irlande', 'EXTERIEUR', NULL, FALSE,FALSE),
+    ('2025-03-02 16:00:00', 'Ecosse', 'DOMICILE', NULL, FALSE,FALSE),
+    ('2025-03-09 18:00:00', 'Angleterre', 'EXTERIEUR', NULL, FALSE,FALSE),
+    ('2025-03-16 20:45:00', 'Italie', 'DOMICILE', NULL, FALSE,TRUE),
+    ('2024-11-25 15:00:00', 'Australie', 'EXTERIEUR', 'VICTOIRE', TRUE,TRUE),
+    ('2024-10-30 20:00:00', 'Argentine', 'DOMICILE', 'VICTOIRE', TRUE,TRUE),
+    ('2024-08-15 19:00:00', 'Fidji', 'EXTERIEUR', 'VICTOIRE', TRUE,TRUE);
 
 
-INSERT INTO Participer (idMatch, idJoueur, estTitulaire, numero, archive)
+INSERT INTO Participer (idMatch, idJoueur, estTitulaire, numero)
 VALUES
-    (1,1,1,1,0)
-    ,(1,2,1,2,0)
-    ,(1,3,1,3,0)
-    ,(1,4,1,4,0);
+    (1,1,1,1)
+    ,(1,2,1,2)
+    ,(1,3,1,3)
+    ,(1,4,1,4);
