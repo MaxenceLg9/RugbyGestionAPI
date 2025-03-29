@@ -70,7 +70,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET') {
 else if($_SERVER['REQUEST_METHOD'] == 'POST') {
     if(checkPOSTBody($jsonBody)){
         if(isArchiveMatch($jsonBody["idMatch"]))
-            $message = array("status" => 422, "response" => "Impossible de mettre à jour la feuille de match : validée", "data" => []);
+            $message = array("status" => 422, "response" => "Impossible de mettre à jour la feuille de match : archivée", "data" => []);
         else
             $message = array("status" => 201, "response" => "Feuille de Match créé avec succès", "data" => fillFDM($jsonBody));
     } else {
@@ -94,14 +94,13 @@ else if($_SERVER["REQUEST_METHOD"] == 'PATCH') {
     }
 }
 else if($_SERVER['REQUEST_METHOD'] == 'DELETE') {
-    if(isset($jsonBody["idMatch"])){
+    if(isset($jsonBody["idMatch"]))
         if(deleteMatch($jsonBody["idMatch"]))
             $message = array("status" => 200, "response" => "Feuille de Match supprimé avec succès", "data" => readByMatch($jsonBody["idMatch"]));
         else
             $message = array("status" => 200, "response" => "Erreur lors de la suppression de la Feuille de Match", "data" => []);
-    } else {
+    else
         $message = array("status" => 400, "response" => "Les paramètres sont invalides");
-    }
 }
 else if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     $message = array("status" => 200, "response" => "Options ok");
