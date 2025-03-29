@@ -1,12 +1,9 @@
 <?php
 
-enum Statut: string
+enum Lieu: string
 {
-    case ACTIF = 'Actif';
-    case BLESSE = 'Blessé';
-    case SUSPENDU = 'Suspendu';
-    case ABSENT = 'Absent';
-
+    case DOMICILE = 'Domicile';
+    case EXTERIEUR = 'Exterieur';
     public static function existFromName(string $name): bool
     {
         foreach (self::cases() as $case) {
@@ -15,16 +12,6 @@ enum Statut: string
             }
         }
         return false; // Return null if no match is found
-    }
-
-    public static function fromName(string $name): ?Statut
-    {
-        foreach (self::cases() as $case) {
-            if ($case->name === $name) {
-                return $case;
-            }
-        }
-        return null;
     }
 
     public static function staticCases() : array{

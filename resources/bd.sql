@@ -1,8 +1,8 @@
-DROP DATABASE IF EXISTS rugbygestion;
+-- DROP DATABASE IF EXISTS rugbygestion;
+--
+-- CREATE DATABASE IF NOT EXISTS rugbygestion DEFAULT CHARACTER SET utf8mb4 DEFAULT COLLATE utf8mb4_unicode_ci;
 
-CREATE DATABASE IF NOT EXISTS rugbygestion DEFAULT CHARACTER SET utf8mb4 DEFAULT COLLATE utf8mb4_unicode_ci;
-
-USE rugbygestion;
+-- USE rugbygestion;
 
 DROP TABLE IF EXISTS Participer;
 DROP TABLE IF EXISTS MatchDeRugby;

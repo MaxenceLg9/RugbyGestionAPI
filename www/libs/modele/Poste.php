@@ -32,4 +32,12 @@ enum Poste: string
         }
         return null;
     }
+
+    public static function staticCases() : array{
+        $cases = [];
+        foreach (self::cases() as $case) {
+            $cases[$case->name] = $case->value;
+        }
+        return $cases;
+    }
 }

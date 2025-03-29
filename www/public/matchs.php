@@ -27,7 +27,7 @@ function validateDate($date, $format = 'Y-m-d H:i:s') : bool {
 }
 
 function checkBody(mixed $jsonBody): bool {
-    return isset($jsonBody["adversaire"]) && isset($jsonBody["dateHeure"]) && isset($jsonBody["lieu"]) && in_array($jsonBody["lieu"], ["DOMICILE", "EXTERIEUR"]) && validateDate($jsonBody["dateHeure"]);
+    return isset($jsonBody["adversaire"]) && isset($jsonBody["dateHeure"]) && isset($jsonBody["lieu"]) && Lieu::existFromName($jsonBody["lieu"]) && validateDate($jsonBody["dateHeure"]);
 }
 
 
