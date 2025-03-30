@@ -30,8 +30,8 @@ namespace Joueur {
         try {
             $connexion = getPDO();
             $statement = $connexion->prepare(
-                "INSERT INTO Joueur (numeroLicence, nom, prenom, dateNaissance, taille, poids, statut, postePrefere, estPremiereLigne, commentaire) 
-                   VALUES (:numeroLicence, :nom, :prenom, :dateNaissance, :taille, :poids, :statut, :postePrefere, :estPremiereLigne, :commentaire)");
+                "INSERT INTO Joueur (numeroLicence, nom, prenom, dateNaissance, taille, poids, statut, postePrefere, estPremiereLigne, commentaire, url) 
+                   VALUES (:numeroLicence, :nom, :prenom, :dateNaissance, :taille, :poids, :statut, :postePrefere, :estPremiereLigne, :commentaire, :url)");
 
             bindParams($joueur, $statement);
             $statement->execute();
@@ -151,5 +151,6 @@ namespace Joueur {
         $statement->bindParam(':postePrefere', $joueur["postePrefere"]);
         $statement->bindParam(':estPremiereLigne', $joueur["estPremiereLigne"]);
         $statement->bindParam(':commentaire', $joueur["commentaire"]);
+        $statement->bindParam(':url', $joueur["url"]);
     }
 }
