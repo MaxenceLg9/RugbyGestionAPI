@@ -34,6 +34,7 @@ namespace Joueur {
                    VALUES (:numeroLicence, :nom, :prenom, :dateNaissance, :taille, :poids, :statut, :postePrefere, :estPremiereLigne, :commentaire, :url)");
 
             bindParams($joueur, $statement);
+            $statement->bindParam(':url', $url);
             $statement->execute();
 
             return $connexion->lastInsertId();
@@ -152,6 +153,5 @@ namespace Joueur {
         $statement->bindParam(':postePrefere', $joueur["postePrefere"]);
         $statement->bindParam(':estPremiereLigne', $joueur["estPremiereLigne"]);
         $statement->bindParam(':commentaire', $joueur["commentaire"]);
-        $statement->bindParam(':url', $url);
     }
 }
