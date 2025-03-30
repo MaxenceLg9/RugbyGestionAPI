@@ -3,6 +3,7 @@
 require_once $_SERVER["DOCUMENT_ROOT"]."../libs/modele/Poste.php";
 require_once $_SERVER["DOCUMENT_ROOT"]."../libs/modele/Resultat.php";
 require_once $_SERVER["DOCUMENT_ROOT"]."../libs/modele/Statut.php";
+require_once $_SERVER["DOCUMENT_ROOT"]."../libs/modele/Lieu.php";
 
 header("Content-Type: application/json");
 header('Cross-Origin-Resource-Policy: *');
