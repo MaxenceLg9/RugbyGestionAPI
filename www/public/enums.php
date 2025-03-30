@@ -17,15 +17,15 @@ if($_SERVER['REQUEST_METHOD'] == 'GET') {
             "statuts" => array("status" => 200, "response" => "Liste des statuts récupérée avec succès", "data" => Statut::staticCases()),
             "resultats" => array("status" => 200, "response" => "Liste des résultats récupérée avec succès", "data" => Resultat::staticCases()),
             "lieux" => array("status" => 200, "response" => "Liste des lieux récupérée avec succès", "data" => Lieu::staticCases()),
-            default => array("status" => 400, "response" => "Les paramètres sont invalides"),
+            default => array("status" => 400, "response" => "Les paramètres sont invalides","data" => []),
         };
     }
     else
-        $message = array("status" => 400, "response" => "Les paramètres sont invalides");
+        $message = array("status" => 400, "response" => "Les paramètres sont invalides","data" => []);
 
 }
 else {
-    $message = array("status" => 405, "response" => "Méthode non autorisée");
+    $message = array("status" => 405, "response" => "Méthode non autorisée","data" => []);
 }
 http_response_code($message["status"]);
 echo json_encode($message);

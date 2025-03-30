@@ -64,7 +64,7 @@ else if($_SERVER['REQUEST_METHOD'] == 'POST') {
     if(checkBody($jsonBody)){
         $message = array("status" => 201, "response" => "Joueur créé avec succès", "data" => readById(create($jsonBody)));
     } else {
-        $message = array("status" => 400, "response" => "Les paramètres sont invalides");
+        $message = array("status" => 400, "response" => "Les paramètres sont invalides", "data" => []);
     }
 }
 else if($_SERVER["REQUEST_METHOD"] == 'PUT') {
@@ -74,7 +74,7 @@ else if($_SERVER["REQUEST_METHOD"] == 'PUT') {
         else
             $message = array("status" => 200, "response" => "Erreur lors de la modification du joueur", "data" => readById($jsonBody["idJoueur"]));
     } else {
-        $message = array("status" => 400, "response" => "Les paramètres sont invalides");
+        $message = array("status" => 400, "response" => "Les paramètres sont invalides","data" => []);
     }
 }
 else if($_SERVER['REQUEST_METHOD'] == 'DELETE') {
@@ -84,14 +84,14 @@ else if($_SERVER['REQUEST_METHOD'] == 'DELETE') {
         else
             $message = array("status" => 200, "response" => "Erreur lors de la suppression du joueur", "data" => []);
     } else {
-        $message = array("status" => 400, "response" => "Les paramètres sont invalides");
+        $message = array("status" => 400, "response" => "Les paramètres sont invalides", "data" => []);
     }
 }
 else if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
-    $message = array("status" => 200, "response" => "Options ok");
+    $message = array("status" => 200, "response" => "Options ok","data" => []);
 }
 else {
-    $message = array("status" => 405, "response" => "Méthode non autorisée");
+    $message = array("status" => 405, "response" => "Méthode non autorisée","data" => []);
 }
 //var_dump($message["data"]);
 http_response_code($message["status"]);

@@ -41,7 +41,7 @@ else if($_SERVER['REQUEST_METHOD'] == 'POST')//créer un match
     if(checkBody($jsonBody))
         $message = array("status" => 201, "response" => "Match créé avec succès", "data" => readById(create($jsonBody)));
     else
-        $message = array("status" => 400, "response" => "Les paramètres sont invalides");
+        $message = array("status" => 400, "response" => "Les paramètres sont invalides","data" => []);
 
 else if($_SERVER["REQUEST_METHOD"] == 'PUT')//modifier les infos du match
     if (checkBody($jsonBody) && isset($jsonBody["idMatch"]))
@@ -50,7 +50,7 @@ else if($_SERVER["REQUEST_METHOD"] == 'PUT')//modifier les infos du match
         else
             $message = array("status" => 200, "response" => "Erreur lors de la modification du Match", "data" => readById($jsonBody["idMatch"]));
     else
-        $message = array("status" => 400, "response" => "Les paramètres sont invalides");
+        $message = array("status" => 400, "response" => "Les paramètres sont invalides","data" => []);
 
 else if($_SERVER["REQUEST_METHOD"] == 'PATCH')//validation du résultat
     if (isset($jsonBody["idMatch"]) && isset($jsonBody["resultat"]) && Resultat::existFromName($jsonBody["resultat"]))
@@ -59,18 +59,18 @@ else if($_SERVER["REQUEST_METHOD"] == 'PATCH')//validation du résultat
         else
             $message = array("status" => 200, "response" => "Erreur lors de la modification du Match", "data" => readById($jsonBody["idMatch"]));
     else
-        $message = array("status" => 400, "response" => "Les paramètres sont invalides");
+        $message = array("status" => 400, "response" => "Les paramètres sont invalides","data" => []);
 
 else if($_SERVER['REQUEST_METHOD'] == 'DELETE')//suppression du match
     if(isset($jsonBody["idMatch"]))
         $message = array("status" => 200, "response" => "Match supprimé avec succès", "data" => delete($jsonBody["idMatch"]));
      else
-        $message = array("status" => 400, "response" => "Les paramètres sont invalides");
+        $message = array("status" => 400, "response" => "Les paramètres sont invalides","data" => []);
 else if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
-    $message = array("status" => 200, "response" => "Options ok");
+    $message = array("status" => 200, "response" => "Options ok","data" => []);
 }
 else
-    $message = array("status" => 405, "response" => "Méthode non autorisée");
+    $message = array("status" => 405, "response" => "Méthode non autorisée","data" => []);
 
 http_response_code($message["status"]);
 echo json_encode($message);

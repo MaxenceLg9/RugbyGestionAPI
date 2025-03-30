@@ -74,7 +74,7 @@ else if($_SERVER['REQUEST_METHOD'] == 'POST') {
         else
             $message = array("status" => 201, "response" => "Feuille de Match créé avec succès", "data" => fillFDM($jsonBody));
     } else {
-        $message = array("status" => 400, "response" => "Les paramètres sont invalides");
+        $message = array("status" => 400, "response" => "Les paramètres sont invalides","data" => []);
     }
 }
 else if($_SERVER["REQUEST_METHOD"] == 'PUT') {
@@ -90,7 +90,7 @@ else if($_SERVER["REQUEST_METHOD"] == 'PATCH') {
         else
             $message = array("status" => 200, "response" => "Feuille de Match modifié avec succès", "data" => setNotes($jsonBody["feuilles"],$jsonBody["idMatch"]));
     } else {
-        $message = array("status" => 400, "response" => "Les paramètres sont invalides");
+        $message = array("status" => 400, "response" => "Les paramètres sont invalides","data" => []);
     }
 }
 else if($_SERVER['REQUEST_METHOD'] == 'DELETE') {
@@ -100,13 +100,13 @@ else if($_SERVER['REQUEST_METHOD'] == 'DELETE') {
         else
             $message = array("status" => 200, "response" => "Erreur lors de la suppression de la Feuille de Match", "data" => []);
     else
-        $message = array("status" => 400, "response" => "Les paramètres sont invalides");
+        $message = array("status" => 400, "response" => "Les paramètres sont invalides","data" => []);
 }
 else if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
-    $message = array("status" => 200, "response" => "Options ok");
+    $message = array("status" => 200, "response" => "Options ok","data" => []);
 }
 else {
-    $message = array("status" => 405, "response" => "Méthode non autorisée");
+    $message = array("status" => 405, "response" => "Méthode non autorisée","data" => []);
 }
 
 http_response_code($message["status"]);
