@@ -30,14 +30,14 @@ $jsonBody = json_decode(file_get_contents('php://input'), true);
 function checkFields(mixed $jsonBody) : bool{
     return isset($jsonBody["numeroLicence"]) && isset($jsonBody["nom"]) && isset($jsonBody["prenom"]) && isset($jsonBody["dateNaissance"]) &&
         isset($jsonBody["taille"]) && isset($jsonBody["poids"]) && isset($jsonBody["statut"]) && isset($jsonBody["postePrefere"]) &&
-        isset($jsonBody["estPremiereLigne"]) && isset($jsonBody["commentaire"]) && isset($jsonBody["url"]);
+        isset($jsonBody["estPremiereLigne"]) && isset($jsonBody["commentaire"]);
 }
 
 function checkValues(mixed $jsonBody) : bool {
     return Poste::existFromName($jsonBody["postePrefere"]) &&
         Statut::existFromName($jsonBody["statut"]) &&
         is_numeric($jsonBody["taille"]) &&
-        is_numeric($jsonBody["poids"]) && ($jsonBody["estPremiereLigne"] == 0 || $jsonBody["estPremiereLigne"] == 1) &&
+        is_numeric($jsonBody["poids"]) && ($jsonBody["estPremiereLigne"] === 0 || $jsonBody["estPremiereLigne"] === 1) &&
         checkDateNaissance($jsonBody["dateNaissance"]);
 }
 
