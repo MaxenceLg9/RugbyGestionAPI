@@ -34,6 +34,7 @@ namespace Joueur {
                    VALUES (:numeroLicence, :nom, :prenom, :dateNaissance, :taille, :poids, :statut, :postePrefere, :estPremiereLigne, :commentaire, :url)");
 
             bindParams($joueur, $statement);
+            $url = $joueur["nom"] . "_" . $joueur["prenom"] . "_" . $joueur["dateNaissance"];
             $statement->bindParam(':url', $url);
             $statement->execute();
 
@@ -142,7 +143,6 @@ namespace Joueur {
      * @return void
      */
     function bindParams(array $joueur, bool|PDOStatement $statement): void {
-        $url = $joueur["url"] ?? "";
         $statement->bindParam(':numeroLicence', $joueur["numeroLicence"]);
         $statement->bindParam(':nom', $joueur["nom"]);
         $statement->bindParam(':prenom', $joueur["prenom"]);
