@@ -85,9 +85,9 @@ VALUES
     ('2024-08-15 19:00:00', 'Fidji', 'EXTERIEUR', 'VICTOIRE', TRUE,TRUE);
 
 
-INSERT INTO Participer (idMatch, idJoueur, estTitulaire, numero)
-VALUES
-    (1,1,1,1)
-    ,(1,2,1,2)
-    ,(1,3,1,3)
-    ,(1,4,1,4);
+-- INSERT INTO Participer (idMatch, idJoueur, estTitulaire, numero)
+-- VALUES
+--     (1,1,1,1)
+--     ,(1,2,1,2)
+--     ,(1,3,1,3)
+--     ,(1,4,1,4);
