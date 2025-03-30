@@ -41,8 +41,8 @@ VALUES
 (2403, 'Roumat', 'Alexandre', '1997-06-13', 200, 112, 'ACTIF', 'TROISIEME_LIGNE_CENTRE', FALSE, 'Très efficace en touche.', 'roumat.png'),
 
 -- Demis de mêlée
-(2501, 'Dupont', 'Antoine', '1996-11-15', 175, 84, 'ACTIF', 'DEMI_MELEE', FALSE, 'Le meilleur DEMI_MELEE du monde.', 'dupont.png'),
-(2502, 'Le Garrec', 'Nolann', '2002-04-22', 180, 78, 'ACTIF', 'DEMI_MELEE', FALSE, 'Un jeune DEMI_MELEE prometteur.', 'legarrec.png'),
+(2501, 'Dupont', 'Antoine', '1996-11-15', 175, 84, 'ACTIF', 'DEMI_MELEE', FALSE, 'Le meilleur 9 du monde.', 'dupont.png'),
+(2502, 'Le Garrec', 'Nolann', '2002-04-22', 180, 78, 'ACTIF', 'DEMI_MELEE', FALSE, 'Un jeune 9 prometteur.', 'legarrec.png'),
 (2503, 'Lucu', 'Maxime', '1993-05-12', 177, 80, 'ACTIF', 'DEMI_MELEE', FALSE, 'Solide dans la gestion du jeu.', 'lucu.png'),
 (2504, 'Serin', 'Baptiste', '1994-06-20', 180, 82, 'ACTIF', 'DEMI_MELEE', FALSE, 'Créatif et technique.', 'serin.png'),
 (2505, 'Couilloud', 'Baptiste', '1997-07-22', 178, 82, 'ACTIF', 'DEMI_MELEE', 0, 'Agile scrum-half with excellent passing skills.', 'couilloud.png'),

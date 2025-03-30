@@ -156,7 +156,7 @@ namespace FDM {
         try {
             $connexion = getPDO();
             $statement = $connexion->prepare(
-                "SELECT P.*,M.lieu,M.dateHeure,M.adversaire,M.resultat FROM Participer as P JOIN MatchDeRugby as M ON P.idMatch = M.idMatch WHERE P.idJoueur = :idJoueur AND P.archive = 1 AND M.Resultat is not null AND M.Valider = 1");
+                "SELECT P.*,M.lieu,M.dateHeure,M.adversaire,M.resultat FROM Participer as P JOIN MatchDeRugby as M ON P.idMatch = M.idMatch WHERE P.idJoueur = :idJoueur AND M.Valider = 1");
 
             $statement->bindParam(':idJoueur', $idJoueur);
 
@@ -173,7 +173,7 @@ namespace FDM {
         try {
             $connexion = getPDO();
             $statement = $connexion->prepare(
-                "SELECT P.*,M.lieu,M.dateHeure,M.adversaire,M.resultat FROM Participer as P JOIN MatchDeRugby as M ON P.idMatch = M.idMatch WHERE P.numero = :numero AND P.idMatch = :idMatch AND P.archive = 1 AND M.Resultat is not null AND M.Valider = 1");
+                "SELECT P.*,M.lieu,M.dateHeure,M.adversaire,M.resultat FROM Participer as P JOIN MatchDeRugby as M ON P.idMatch = M.idMatch WHERE P.numero = :numero AND P.idMatch = :idMatch AND M.Valider = 1");
 
             $statement->bindParam(':numero', $ids["numero"]);
             $statement->bindParam(':idMatch', $ids["idMatch"]);
