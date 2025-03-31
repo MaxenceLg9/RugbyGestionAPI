@@ -207,7 +207,7 @@ namespace FDM {
      * @param array $fdm
      * @return void
      */
-    function bindParams(PDOStatement $statement, array $fdm, string $numero, string $idMatch): void
+    function bindParams(PDOStatement $statement, string $fdm, string $numero, string $idMatch): void
     {
         $statement->bindParam(':idMatch', $idMatch);
         $statement->bindParam(':numero', $numero);
