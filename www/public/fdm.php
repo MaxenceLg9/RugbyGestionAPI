@@ -33,7 +33,7 @@ function checkPOSTBody(mixed $jsonBody): bool
     foreach ($jsonBody["feuilles"] as $key => $value) {
         if (!isset($key) || !is_numeric($key) || $key < 1 || $key > 23)
             return false;
-        if(!isset($value["idJoueur"]))
+        if(!isset($value))
             return false;
     }
     return true;
