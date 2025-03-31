@@ -5,7 +5,7 @@ require_once "../libs/modele/Resultat.php";
 require_once "../libs/modele/Statut.php";
 
 
-use function Joueur\update,Joueur\delete,Joueur\create,Joueur\readById,Joueur\read;
+use function Joueur\update,Joueur\delete,Joueur\create,Joueur\readById,Joueur\read,Joueur\readBynumeroLicence,Joueur\readNonParticiperMatch,Joueur\readOnMatch;
 
 header('Content-Type: application/json; charset=utf-8');
 header('Cross-Origin-Resource-Policy: *');
@@ -56,7 +56,12 @@ function checkBody(mixed $jsonBody): bool
 if($_SERVER['REQUEST_METHOD'] == 'GET') {
     if(isset($_GET["idJoueur"])){
         $message = array("status" => 200, "response" => "Joueur récupéré avec succès", "data" => readById($_GET["idJoueur"]));
-    } else {
+    } else if(isset($_GET["numerolicence"])){
+        $message = array("status" => 200, "response" => "Joueur récupéré avec succès", "data" => readBynumeroLicence($_GET["numerolicence"]));
+    } else if(isset($_GET["idMatch"])){
+        $message = array("status" => 200, "response" => "Liste des joueurs récupérés avec succès", "data" => array("disponibles" => readNonParticiperMatch($_GET["idMatch"]), "feuille" => readOnMatch($_GET["idMatch"])));
+    }
+    else {
         $message = array("status" => 200, "response" => "Liste des joueurs récupérés avec succès", "data" => read());
     }
 }

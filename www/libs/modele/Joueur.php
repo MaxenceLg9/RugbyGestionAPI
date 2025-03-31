@@ -78,7 +78,22 @@ namespace Joueur {
     function readNonParticiperMatch(int $idMatch): array {
         try {
             $connection = getPDO();
-            $statement = $connection->prepare("SELECT * FROM Joueur WHERE idJoueur NOT IN (SELECT idJoueur FROM Participer WHERE idMatch = :idMatch)");
+            $statement = $connection->prepare("SELECT * FROM Joueur WHERE idJoueur NOT IN (SELECT idJoueur FROM Participer WHERE idMatch = :idMatch) AND statut = 'ACTIF' ORDER BY postePrefere, nom");
+            $statement->bindParam(':idMatch', $idMatch);
+            $statement->execute();
+
+            return $statement->fetchAll(PDO::FETCH_ASSOC);
+        }
+        catch (PDOException $e) {
+            echo "Erreur lors de la lecture des joueurs participant au match: " . $e->getMessage();
+        }
+        return [];
+    }
+
+    function readOnMatch(int $idMatch): array {
+        try {
+            $connection = getPDO();
+            $statement = $connection->prepare("SELECT * FROM Joueur WHERE idJoueur IN (SELECT idJoueur FROM Participer WHERE idMatch = :idMatch) AND statut = 'ACTIF' ORDER BY postePrefere, nom");
             $statement->bindParam(':idMatch', $idMatch);
             $statement->execute();
 
