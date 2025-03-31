@@ -55,7 +55,7 @@ function formatJoueurs(mixed $joueurs): mixed
 {
     $url = $_SERVER["DOCUMENT_ROOT"] . "/img/joueurs/" . $joueurs["url"];
     if (!file_exists($url))
-        $joueurs["url"] = "http://rugbygestion.api/img/data/default.png";
+        $joueurs["url"] = "https://rugbygestionapi.alwaysdata.net/img/data/default.png";
     else
         $joueurs["url"] = "http://rugbygestion.api/img/joueurs/" . $joueurs["url"];
     $joueurs["postePrefere"] = Poste::fromName($joueurs["postePrefere"])->value;
