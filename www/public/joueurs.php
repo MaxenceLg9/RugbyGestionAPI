@@ -57,7 +57,7 @@ function formatJoueurs(mixed $joueurs): mixed
     if (!file_exists($url))
         $joueurs["url"] = "https://rugbygestionapi.alwaysdata.net/img/data/default.png";
     else
-        $joueurs["url"] = "http://rugbygestion.api/img/joueurs/" . $joueurs["url"];
+        $joueurs["url"] = "https://rugbygestionapi.alwaysdata.net/img/joueurs/" . $joueurs["url"];
     $joueurs["postePrefere"] = Poste::fromName($joueurs["postePrefere"])->value;
     $joueurs["statut"] = Statut::fromName($joueurs["statut"])->value;
     $date = DateTime::createFromFormat('Y-m-d', $joueurs["dateNaissance"]);
