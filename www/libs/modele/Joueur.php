@@ -60,7 +60,7 @@ namespace Joueur {
     }
 
 
-    function readBynumeroLicence(int $numeroLicence): array {
+    function readBynumeroLicence(string $numeroLicence): array {
         try {
             $connexion = getPDO();
             $statement = $connexion->prepare("SELECT * FROM Joueur WHERE numeroLicence = :numeroLicence");
@@ -75,7 +75,7 @@ namespace Joueur {
     }
 
 
-    function readNonParticiperMatch(int $idMatch): array {
+    function readNonParticiperMatch(string $idMatch): array {
         try {
             $connection = getPDO();
             $statement = $connection->prepare("SELECT * FROM Joueur WHERE idJoueur NOT IN (SELECT idJoueur FROM Participer WHERE idMatch = :idMatch) AND statut = 'ACTIF' ORDER BY postePrefere, nom");
@@ -90,14 +90,20 @@ namespace Joueur {
         return [];
     }
 
-    function readOnMatch(int $idMatch): array {
+    function readOnMatch(string $idMatch): array {
         try {
             $connection = getPDO();
-            $statement = $connection->prepare("SELECT * FROM Joueur WHERE idJoueur IN (SELECT idJoueur FROM Participer WHERE idMatch = :idMatch) AND statut = 'ACTIF' ORDER BY postePrefere, nom");
+            $statement = $connection->prepare("SELECT J.*,P.numero FROM Joueur AS J JOIN Participer AS P ON P.idJoueur = J.idJoueur WHERE P.idMatch = :idMatch ORDER BY J.postePrefere, J.nom");
             $statement->bindParam(':idMatch', $idMatch);
             $statement->execute();
 
-            return $statement->fetchAll(PDO::FETCH_ASSOC);
+            $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+            $array = [];
+            foreach($result as $row) {
+                $array[$row["numero"]] = $row;
+                unset($array[$row["numero"]["numero"]]);
+            }
+            return $array;
         }
         catch (PDOException $e) {
             echo "Erreur lors de la lecture des joueurs participant au match: " . $e->getMessage();
