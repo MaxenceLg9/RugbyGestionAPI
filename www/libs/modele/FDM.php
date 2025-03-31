@@ -42,8 +42,8 @@ namespace FDM {
         try {
             $connexion = getPDO();
             $statement = $connexion->prepare(
-                "INSERT INTO Participer (idMatch, idJoueur, estTitulaire, numero,note)
-             VALUES (:idMatch, :idJoueur, :estTitulaire, :numero,-1)");
+                "INSERT INTO Participer (idMatch, idJoueur, numero,note)
+             VALUES (:idMatch, :idJoueur, :numero,-1)");
 
             foreach ($feuilles as $key => $fdm) {
                 bindParams($statement, $fdm, $key, $idMatch);
@@ -58,7 +58,7 @@ namespace FDM {
         try {
             $connexion = getPDO();
             $statement = $connexion->prepare(
-                "UPDATE Participer SET estTitulaire = :estTitulaire, idJoueur = :idJoueur
+                "UPDATE Participer SET idJoueur = :idJoueur
              WHERE idMatch = :idMatch AND numero = :numero");
 
             foreach ($feuilles as $key => $fdm) {
@@ -210,9 +210,8 @@ namespace FDM {
     function bindParams(PDOStatement $statement, array $fdm, string $numero, string $idMatch): void
     {
         $statement->bindParam(':idMatch', $idMatch);
-        $statement->bindParam(':estTitulaire', $fdm["estTitulaire"]);
         $statement->bindParam(':numero', $numero);
-        $statement->bindParam(':idJoueur', $fdm["idJoueur"]);
+        $statement->bindParam(':idJoueur', $fdm);
     }
 
 }

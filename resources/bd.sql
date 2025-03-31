@@ -48,7 +48,6 @@ CREATE TABLE IF NOT EXISTS MatchDeRugby (
 CREATE TABLE IF NOT EXISTS Participer (
     idMatch INT NOT NULL,
     idJoueur INT NOT NULL,
-    estTitulaire BOOLEAN NOT NULL,
     numero INT NOT NULL,
     note FLOAT NOT NULL,
     PRIMARY KEY (idMatch, numero),
@@ -57,8 +56,8 @@ CREATE TABLE IF NOT EXISTS Participer (
     );
 
 CREATE TABLE IF NOT EXISTS Entraineur (
-                                          idEntraineur INT PRIMARY KEY AUTO_INCREMENT,
-                                          nom VARCHAR(50) NOT NULL,
+    idEntraineur INT PRIMARY KEY AUTO_INCREMENT,
+    nom VARCHAR(50) NOT NULL,
     prenom VARCHAR(50) NOT NULL,
     email VARCHAR(50) NOT NULL,
     equipe VARCHAR(20) NOT NULL,
