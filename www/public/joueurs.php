@@ -51,13 +51,28 @@ function checkBody(mixed $jsonBody): bool
     return checkFields($jsonBody) && checkValues($jsonBody);
 }
 
+function formatJoueurs(mixed $joueurs): mixed
+{
+    $url = $_SERVER["DOCUMENT_ROOT"] . "/img/joueurs/" . $joueurs["url"];
+    if (!file_exists($url))
+        $joueurs["url"] = "http://rugbygestion.api/img/data/default.png";
+    else
+        $joueurs["url"] = "http://rugbygestion.api/img/joueurs/" . $joueurs["url"];
+    $joueurs["postePrefere"] = Poste::fromName($joueurs["postePrefere"])->value;
+    $joueurs["statut"] = Statut::fromName($joueurs["statut"])->value;
+    $date = DateTime::createFromFormat('Y-m-d', $joueurs["dateNaissance"]);
+    $joueurs["dateNaissance"] = $date->format('d-m-Y');
+    $joueurs["estPremiereLigne"] = ($joueurs["estPremiereLigne"] == 0) ? "Non" : "Oui";
+    return $joueurs;
+}
+
 
 
 if($_SERVER['REQUEST_METHOD'] == 'GET') {
     if(isset($_GET["idJoueur"])){
         $message = array("status" => 200, "response" => "Joueur récupéré avec succès", "data" => readById($_GET["idJoueur"]));
-    } else if(isset($_GET["numerolicence"])){
-        $message = array("status" => 200, "response" => "Joueur récupéré avec succès", "data" => readBynumeroLicence($_GET["numerolicence"]));
+    } else if(isset($_GET["numeroLicence"])){
+        $message = array("status" => 200, "response" => "Joueur récupéré avec succès", "data" => readBynumeroLicence($_GET["numeroLicence"]));
     } else if(isset($_GET["idMatch"])){
         $message = array("status" => 200, "response" => "Liste des joueurs récupérés avec succès", "data" => array("disponibles" => readNonParticiperMatch($_GET["idMatch"]), "feuille" => readOnMatch($_GET["idMatch"])));
     }
@@ -101,16 +116,17 @@ else {
 //var_dump($message["data"]);
 http_response_code($message["status"]);
 
-foreach ($message["data"] as &$joueurs){
-    $url = $_SERVER["DOCUMENT_ROOT"]."/img/joueurs/".$joueurs["url"];
-    if(!file_exists($url))
-        $joueurs["url"] = "http://rugbygestion.api/img/data/default.png";
-    else
-        $joueurs["url"] = "http://rugbygestion.api/img/joueurs/".$joueurs["url"];
-    $joueurs["postePrefere"] = Poste::fromName($joueurs["postePrefere"])->value;
-    $joueurs["statut"] = Statut::fromName($joueurs["statut"])->value;
-    $date = DateTime::createFromFormat('Y-m-d', $joueurs["dateNaissance"]);
-    $joueurs["dateNaissance"] = $date->format('d-m-Y');
-    $joueurs["estPremiereLigne"] = ($joueurs["estPremiereLigne"] == 0) ? "Non" : "Oui";
+if(isset($message["data"]["disponibles"])){
+    foreach ($message["data"]["disponibles"] as &$joueur) {
+        $joueur = formatJoueurs($joueur);
+    }
+    foreach ($message["data"]["feuille"] as &$joueur) {
+        $joueur = formatJoueurs($joueur);
+    }
+}
+else{
+    foreach ($message["data"] as &$joueurs){
+        $joueurs = formatJoueurs($joueurs);
+    }
 }
 echo json_encode($message);
