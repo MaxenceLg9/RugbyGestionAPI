@@ -20,7 +20,7 @@ if(!apiVerifyToken()){
 
 $jsonBody = json_decode(file_get_contents('php://input'), true);
 
-function validateDate($date, $format = 'Y-m-d H:i:s') : bool {
+function validateDate($date, $format = 'Y-m-d H:i') : bool {
     $d = DateTime::createFromFormat($format, $date);
     // The Y ( 4 digits year ) returns TRUE for any integer with any number of digits so changing the comparison from == to === fixes the issue.
     return $d && strtolower($d->format($format)) === strtolower($date);
