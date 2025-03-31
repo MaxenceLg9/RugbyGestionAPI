@@ -1,7 +1,7 @@
 <?php
 require_once $_SERVER["DOCUMENT_ROOT"]."../libs/modele/Match.php";
 require_once $_SERVER["DOCUMENT_ROOT"]."../libs/modele/Resultat.php";
-
+require_once $_SERVER["DOCUMENT_ROOT"]."../libs/modele/Lieu.php";
 
 use function MatchDeRugby\delete, MatchDeRugby\create, MatchDeRugby\read, MatchDeRugby\readById, MatchDeRugby\update,MatchDeRugby\validerMatch;
 
