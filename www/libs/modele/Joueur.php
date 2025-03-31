@@ -101,7 +101,7 @@ namespace Joueur {
             $array = [];
             foreach($result as $row) {
                 $array[$row["numero"]] = $row;
-                unset($array[$row["numero"]["numero"]]);
+                unset($array[$row["numero"]]["numero"]);
             }
             return $array;
         }
