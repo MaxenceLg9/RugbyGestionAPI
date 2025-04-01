@@ -44,7 +44,7 @@ function checkPATCHBody(mixed $jsonBody): bool {
     foreach ($jsonBody["feuilles"] as $key => $value) {
         if (!isset($key) || !is_numeric($key) || $key < 1 || $key > 23)
             return false;
-        if(!isset($value["note"]))
+        if(!isset($value) || !is_numeric($value) || $value < 0 || $value > 20)
             return false;
     }
     return true;

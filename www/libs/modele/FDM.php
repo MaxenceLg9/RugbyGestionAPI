@@ -95,10 +95,10 @@ namespace FDM {
                 "UPDATE Participer SET note = :note
              WHERE idMatch = :idMatch AND numero = :numero");
 
-            foreach ($feuilles as $key => $fdm) {
+            foreach ($feuilles as $key => $note) {
                 $statement->bindParam(":idMatch",$idMatch);
                 $statement->bindParam(":numero",$key);
-                $statement->bindParam(":note",$fdm["note"]);
+                $statement->bindParam(":note",$note);
                 $statement->execute();
             }
             return readByMatch($idMatch);
@@ -139,7 +139,7 @@ namespace FDM {
         try {
             $connexion = getPDO();
             $statement = $connexion->prepare(
-                "SELECT * FROM Participer WHERE idMatch = :idMatch ORDER BY numero");
+                "SELECT * FROM Participer AS P JOIN Joueur AS J ON J.idJoueur = P.idJoueur WHERE P.idMatch = :idMatch ORDER BY P.numero");
 
             $statement->bindParam(':idMatch', $idMatch);
 
