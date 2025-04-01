@@ -2,8 +2,10 @@
 
 require_once $_SERVER["DOCUMENT_ROOT"]."../libs/modele/FDM.php";
 require_once $_SERVER["DOCUMENT_ROOT"]."../libs/modele/Match.php";
+require_once $_SERVER["DOCUMENT_ROOT"]."../libs/modele/Joueur.php";
 
 use function MatchDeRugby\isArchiveMatch,MatchDeRugby\archiver;
+use function Joueur\formatJoueurs;
 use function FDM\readByNumeroAndMatch,FDM\read,FDM\readByMatch,FDM\readByJoueur,FDM\fillFDM,FDM\deleteMatch,\FDM\setNotes;
 
 header("Content-Type: application/json");
@@ -11,7 +13,6 @@ header('Cross-Origin-Resource-Policy: *');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, PATCH, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type, Authorization');
-
 
 //check du jeton avec une requête POST sur l'api d'authentification
 /*
@@ -57,8 +58,14 @@ if($_SERVER['REQUEST_METHOD'] == 'GET') {
     if(isset($_GET["idMatch"])){
         if(isset($_GET["numero"]))
             $message = array("status" => 200, "response" => "Feuille de Match par numéro & match récupérée avec succès", "data" => (readByNumeroAndMatch(array("idMatch" => $_GET["idMatch"],"numero" => $_GET["numero"]))));
-        else
+        else {
             $message = array("status" => 200, "response" => "Feuilles de Match du match récupérées avec succès", "data" => (readByMatch($_GET["idMatch"])));
+            if(!empty($message["data"]["matchs"])) {
+                foreach ($message["data"]["matchs"][$_GET["idMatch"]]["feuilles"] as $key=>&$joueurs) {
+                    $joueurs = formatJoueurs($joueurs);
+                }
+            }
+        }
     } else if(isset($_GET["idJoueur"])){
         $message = array("status" => 200, "response" => "Feuilles de Match du joueur récupérées avec succès", "data" => (readByJoueur($_GET["idJoueur"])));
     }

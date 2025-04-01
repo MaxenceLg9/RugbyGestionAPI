@@ -1,11 +1,10 @@
 <?php
 require_once "../libs/modele/Joueur.php";
 require_once "../libs/modele/Poste.php";
-require_once "../libs/modele/Resultat.php";
 require_once "../libs/modele/Statut.php";
 
 
-use function Joueur\update,Joueur\delete,Joueur\create,Joueur\readById,Joueur\read,Joueur\readBynumeroLicence,Joueur\readNonParticiperMatch,Joueur\readOnMatch;
+use function Joueur\update,Joueur\delete,Joueur\create,Joueur\readById,Joueur\read,Joueur\readBynumeroLicence,Joueur\readNonParticiperMatch,Joueur\readOnMatch,Joueur\formatJoueurs;
 
 header('Content-Type: application/json; charset=utf-8');
 header('Cross-Origin-Resource-Policy: *');
@@ -49,21 +48,6 @@ function checkDateNaissance(string $date): bool {
 function checkBody(mixed $jsonBody): bool
 {
     return checkFields($jsonBody) && checkValues($jsonBody);
-}
-
-function formatJoueurs(mixed $joueurs): mixed
-{
-    $url = $_SERVER["DOCUMENT_ROOT"] . "/img/joueurs/" . $joueurs["url"];
-    if (!file_exists($url))
-        $joueurs["url"] = "https://rugbygestionapi.alwaysdata.net/img/data/default.png";
-    else
-        $joueurs["url"] = "https://rugbygestionapi.alwaysdata.net/img/joueurs/" . $joueurs["url"];
-    $joueurs["postePrefere"] = Poste::fromName($joueurs["postePrefere"])->value;
-    $joueurs["statut"] = Statut::fromName($joueurs["statut"])->value;
-    $date = DateTime::createFromFormat('Y-m-d', $joueurs["dateNaissance"]);
-    $joueurs["dateNaissance"] = $date->format('d-m-Y');
-    $joueurs["estPremiereLigne"] = ($joueurs["estPremiereLigne"] == 0) ? "Non" : "Oui";
-    return $joueurs;
 }
 
 

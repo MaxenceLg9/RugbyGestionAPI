@@ -138,8 +138,7 @@ namespace FDM {
     {
         try {
             $connexion = getPDO();
-            $statement = $connexion->prepare(
-                "SELECT * FROM Participer AS P JOIN Joueur AS J ON J.idJoueur = P.idJoueur WHERE P.idMatch = :idMatch ORDER BY P.numero");
+            $statement = $connexion->prepare("SELECT P.numero, P.idMatch, P.note, J.* FROM Participer AS P JOIN Joueur AS J ON J.idJoueur = P.idJoueur WHERE P.idMatch = :idMatch ORDER BY P.numero");
 
             $statement->bindParam(':idMatch', $idMatch);
 
@@ -197,7 +196,6 @@ namespace FDM {
             unset($fdm["idMatch"]);
             unset($fdm["numero"]);
             $sortedFDM[$idMatch]["feuilles"][$numero] = $fdm;
-
         }
         return array("matchs" => $sortedFDM);
     }

@@ -2,12 +2,34 @@
 
 namespace Joueur {
 
-    use DateMalformedStringException;
+
+    use DateTime;
     use PDO;
     use PDOException;
     use PDOStatement;
 
     require_once "{$_SERVER["DOCUMENT_ROOT"]}/../libs/db/db.php";
+    require_once $_SERVER["DOCUMENT_ROOT"]."../libs/modele/Poste.php";
+    require_once $_SERVER["DOCUMENT_ROOT"]."../libs/modele/Statut.php";
+
+    function formatJoueurs(mixed $joueurs): mixed
+    {
+        if(!isset($joueurs["url"])) {
+            var_dump($joueurs);
+            die();
+        }
+        $url = $_SERVER["DOCUMENT_ROOT"] . "/img/joueurs/" . $joueurs["url"];
+        if (!file_exists($url))
+            $joueurs["url"] = "https://rugbygestionapi.alwaysdata.net/img/data/default.png";
+        else
+            $joueurs["url"] = "https://rugbygestionapi.alwaysdata.net/img/joueurs/" . $joueurs["url"];
+        $joueurs["postePrefere"] = \Poste::fromName($joueurs["postePrefere"])->value;
+        $joueurs["statut"] = \Statut::fromName($joueurs["statut"])->value;
+        $date = DateTime::createFromFormat('Y-m-d', $joueurs["dateNaissance"]);
+        $joueurs["dateNaissance"] = $date->format('d-m-Y');
+        $joueurs["estPremiereLigne"] = ($joueurs["estPremiereLigne"] == 0) ? "Non" : "Oui";
+        return $joueurs;
+    }
 
     /**
      * @throws DateMalformedStringException
