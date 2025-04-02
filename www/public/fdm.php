@@ -4,6 +4,7 @@ require_once $_SERVER["DOCUMENT_ROOT"]."../libs/modele/FDM.php";
 require_once $_SERVER["DOCUMENT_ROOT"]."../libs/modele/Match.php";
 require_once $_SERVER["DOCUMENT_ROOT"]."../libs/modele/Joueur.php";
 
+use function MatchDeRugby\formatMatchs;
 use function MatchDeRugby\isArchiveMatch,MatchDeRugby\archiver;
 use function Joueur\formatJoueurs;
 use function FDM\readByNumeroAndMatch,FDM\read,FDM\readByMatch,FDM\readByJoueur,FDM\fillFDM,FDM\deleteMatch,\FDM\setNotes;
@@ -56,8 +57,14 @@ function checkPATCHBody(mixed $jsonBody): bool {
 
 if($_SERVER['REQUEST_METHOD'] == 'GET') {
     if(isset($_GET["idMatch"])){
-        if(isset($_GET["numero"]))
-            $message = array("status" => 200, "response" => "Feuille de Match par numéro & match récupérée avec succès", "data" => (readByNumeroAndMatch(array("idMatch" => $_GET["idMatch"],"numero" => $_GET["numero"]))));
+        if(isset($_GET["numero"])) {
+            $message = array("status" => 200, "response" => "Feuille de Match par numéro & match récupérée avec succès", "data" => (readByNumeroAndMatch(array("idMatch" => $_GET["idMatch"], "numero" => $_GET["numero"]))));
+            if(!empty($message["data"]["matchs"])) {
+                foreach ($message["data"]["matchs"][$_GET["idMatch"]]["feuilles"] as $key=>&$match) {
+                    $match = formatMatchs($match);
+                }
+            }
+        }
         else {
             $message = array("status" => 200, "response" => "Feuilles de Match du match récupérées avec succès", "data" => (readByMatch($_GET["idMatch"])));
             if(!empty($message["data"]["matchs"])) {

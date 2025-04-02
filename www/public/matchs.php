@@ -3,7 +3,7 @@ require_once $_SERVER["DOCUMENT_ROOT"]."../libs/modele/Match.php";
 require_once $_SERVER["DOCUMENT_ROOT"]."../libs/modele/Resultat.php";
 require_once $_SERVER["DOCUMENT_ROOT"]."../libs/modele/Lieu.php";
 
-use function MatchDeRugby\delete, MatchDeRugby\create, MatchDeRugby\read, MatchDeRugby\readById, MatchDeRugby\update,MatchDeRugby\validerMatch;
+use function MatchDeRugby\delete, MatchDeRugby\create, MatchDeRugby\read, MatchDeRugby\readById, MatchDeRugby\update,MatchDeRugby\validerMatch,MatchDeRugby\formatMatchs;
 
 header("Content-Type: application/json");
 header('Cross-Origin-Resource-Policy: *');
@@ -71,6 +71,8 @@ else if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 }
 else
     $message = array("status" => 405, "response" => "Méthode non autorisée","data" => []);
-
+foreach ($message["data"] as &$match){
+    $match = formatMatchs($match);
+}
 http_response_code($message["status"]);
 echo json_encode($message);

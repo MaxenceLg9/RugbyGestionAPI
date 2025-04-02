@@ -21,4 +21,14 @@ enum Lieu: string
         }
         return $cases;
     }
+
+    public static function fromName(string $name): ?Lieu
+    {
+        foreach (self::cases() as $case) {
+            if ($case->name === $name) {
+                return $case;
+            }
+        }
+        return null;
+    }
 }

@@ -3,11 +3,21 @@
 namespace MatchDeRugby {
 
     require_once "{$_SERVER["DOCUMENT_ROOT"]}/../libs/db/db.php";
+    require_once "{$_SERVER["DOCUMENT_ROOT"]}/../libs/modele/Resultat.php";
+    require_once "{$_SERVER["DOCUMENT_ROOT"]}/../libs/modele/Lieu.php";
 
     use DateTime;
     use Exception;
     use PDO;
     use PDOException;
+
+    function formatMatchs(array $match): array
+    {
+        if($match["resultat"] !== null)
+            $match["resultat"] = Resultat::fromName($match["resultat"])->value;
+        $match["lieu"] = Lieu::fromName($match["lieu"])->value;
+        return $match;
+    }
 
     function create(array $match): string {
         try {
