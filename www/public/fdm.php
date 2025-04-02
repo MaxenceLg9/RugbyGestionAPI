@@ -68,13 +68,20 @@ if($_SERVER['REQUEST_METHOD'] == 'GET') {
         else {
             $message = array("status" => 200, "response" => "Feuilles de Match du match récupérées avec succès", "data" => (readByMatch($_GET["idMatch"])));
             if(!empty($message["data"]["matchs"])) {
-                foreach ($message["data"]["matchs"][$_GET["idMatch"]]["feuilles"] as $key=>&$joueurs) {
-                    $joueurs = formatJoueurs($joueurs);
+                foreach ($message["data"]["matchs"][$_GET["idMatch"]]["feuilles"] as $key=>&$match) {
+                    $match = formatJoueurs($match);
                 }
             }
         }
     } else if(isset($_GET["idJoueur"])){
         $message = array("status" => 200, "response" => "Feuilles de Match du joueur récupérées avec succès", "data" => (readByJoueur($_GET["idJoueur"])));
+        if(!empty($message["data"]["matchs"])) {
+            foreach ($message["data"]["matchs"] as $idMatch=>&$match) {
+                foreach ($match["feuilles"] as $key => &$fdm) {
+                    $fdm = formatMatchs($fdm);
+                }
+            }
+        }
     }
     else {
         $message = array("status" => 200, "response" => "Liste des Feuilles de Matchs récupérées avec succès", "data" => (read()));
