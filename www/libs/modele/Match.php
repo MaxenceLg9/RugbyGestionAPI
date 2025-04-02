@@ -14,8 +14,8 @@ namespace MatchDeRugby {
     function formatMatchs(array $match): array
     {
         if($match["resultat"] !== null)
-            $match["resultat"] = Resultat::fromName($match["resultat"])->value;
-        $match["lieu"] = Lieu::fromName($match["lieu"])->value;
+            $match["resultat"] = \Resultat::fromName($match["resultat"])->value;
+        $match["lieu"] = \Lieu::fromName($match["lieu"])->value;
         return $match;
     }
 
