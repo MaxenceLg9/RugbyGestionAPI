@@ -16,6 +16,8 @@ namespace MatchDeRugby {
         if($match["resultat"] !== null)
             $match["resultat"] = \Resultat::fromName($match["resultat"])->value;
         $match["lieu"] = \Lieu::fromName($match["lieu"])->value;
+        $date = DateTime::createFromFormat('Y-m-d H:i:s', $match["dateHeure"]);
+        $match["dateHeure"] = $date->format('d/m/Y H:i');
         return $match;
     }
 

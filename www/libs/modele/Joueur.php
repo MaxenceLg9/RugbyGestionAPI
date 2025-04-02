@@ -26,7 +26,7 @@ namespace Joueur {
         $joueurs["postePrefere"] = \Poste::fromName($joueurs["postePrefere"])->value;
         $joueurs["statut"] = \Statut::fromName($joueurs["statut"])->value;
         $date = DateTime::createFromFormat('Y-m-d', $joueurs["dateNaissance"]);
-        $joueurs["dateNaissance"] = $date->format('d-m-Y');
+        $joueurs["dateNaissance"] = $date->format('d/m/Y');
         $joueurs["estPremiereLigne"] = ($joueurs["estPremiereLigne"] == 0) ? "Non" : "Oui";
         return $joueurs;
     }
