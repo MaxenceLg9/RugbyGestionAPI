@@ -68,6 +68,22 @@ namespace MatchDeRugby {
         return [];
     }
 
+    function readStats() : array{
+        try {
+            $connexion = getPDO();
+            $statement = $connexion->prepare("SELECT 
+    CAST(COUNT(*) AS UNSIGNED) AS totalMatches, 
+    CAST(COALESCE(SUM(resultat = 'VICTOIRE'), 0) AS UNSIGNED) AS matchesWon, 
+    CONCAT(CAST(IFNULL(SUM(resultat = 'VICTOIRE') / NULLIF(SUM(resultat = 'DEFAITE'), 0), 0) AS DECIMAL(10, 3)), '%') AS winLossRatio 
+FROM MatchDeRugby;");
+            $statement->execute();
+            return $statement->fetch(PDO::FETCH_ASSOC);
+        } catch (Exception $e) {
+            echo "Erreur lors de la lecture des stats: " . $e->getMessage();
+        }
+        return [];
+    }
+
     function readByDateHeure(DateTime $dateHeure): array {
         $dateHeure = $dateHeure->format('Y-m-d H:i:s');
         try {
@@ -150,11 +166,12 @@ namespace MatchDeRugby {
         }
     }
 
-    function readMatchWithResultat(): array
+    function readMatchWithResultat(int $limit): array
     {
         try {
             $connexion = getPDO();
-            $statement = $connexion->prepare("SELECT * FROM MatchDeRugby WHERE resultat is not null ORDER BY dateHeure");
+            $statement = $connexion->prepare("SELECT * FROM MatchDeRugby WHERE resultat is not null ORDER BY dateHeure LIMIT ?");
+            $statement->bindValue(1, $limit, PDO::PARAM_INT);
             $statement->execute();
             return $statement->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {

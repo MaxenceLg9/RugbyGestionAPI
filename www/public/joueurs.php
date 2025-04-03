@@ -4,6 +4,7 @@ require_once "../libs/modele/Poste.php";
 require_once "../libs/modele/Statut.php";
 
 
+use function Joueur\readByStatut;
 use function Joueur\update,Joueur\delete,Joueur\create,Joueur\readById,Joueur\read,Joueur\readBynumeroLicence,Joueur\readNonParticiperMatch,Joueur\readOnMatch,Joueur\formatJoueurs;
 
 header('Content-Type: application/json');
@@ -59,6 +60,9 @@ if($_SERVER['REQUEST_METHOD'] == 'GET') {
         $message = array("status" => 200, "response" => "Joueur récupéré avec succès", "data" => readBynumeroLicence($_GET["numeroLicence"]));
     } else if(isset($_GET["idMatch"])){
         $message = array("status" => 200, "response" => "Liste des joueurs récupérés avec succès", "data" => array("disponibles" => readNonParticiperMatch($_GET["idMatch"]), "feuille" => readOnMatch($_GET["idMatch"])));
+    }
+    else if(isset($_GET["statut"])){
+        $message = array("status" => 200, "response" => "Liste des joueurs récupérés avec succès", "data" => readByStatut($_GET["statut"]));
     }
     else {
         $message = array("status" => 200, "response" => "Liste des joueurs récupérés avec succès", "data" => read());

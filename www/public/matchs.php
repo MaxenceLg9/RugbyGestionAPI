@@ -4,6 +4,7 @@ require_once $_SERVER["DOCUMENT_ROOT"]."../libs/modele/Resultat.php";
 require_once $_SERVER["DOCUMENT_ROOT"]."../libs/modele/Lieu.php";
 
 use function MatchDeRugby\delete, MatchDeRugby\create, MatchDeRugby\read, MatchDeRugby\readById, MatchDeRugby\update,MatchDeRugby\validerMatch,MatchDeRugby\formatMatchs;
+use function MatchDeRugby\readMatchWithResultat;
 
 header('Content-Type: application/json');
 header('Cross-Origin-Resource-Policy: *');
@@ -34,7 +35,9 @@ function checkBody(mixed $jsonBody): bool {
 if($_SERVER['REQUEST_METHOD'] == 'GET')//récupérer des matchs
     if(isset($_GET["idMatch"]))
         $message = array("status" => 200, "response" => "Match récupéré avec succès", "data" => readById($_GET["idMatch"]));
-     else
+    else if(isset($_GET["limit"]) && is_numeric($_GET["limit"]))
+        $message = array("status" => 200, "response" => "Match récupéré avec succès", "data" => readMatchWithResultat($_GET["limit"]));
+    else
         $message = array("status" => 200, "response" => "Liste des Matchs récupérés avec succès", "data" => read());
 
 else if($_SERVER['REQUEST_METHOD'] == 'POST')//créer un match
@@ -64,7 +67,7 @@ else if($_SERVER["REQUEST_METHOD"] == 'PATCH')//validation du résultat
 else if($_SERVER['REQUEST_METHOD'] == 'DELETE')//suppression du match
     if(isset($jsonBody["idMatch"]))
         $message = array("status" => 200, "response" => "Match supprimé avec succès", "result" => delete($jsonBody["idMatch"]));
-     else
+    else
         $message = array("status" => 400, "response" => "Les paramètres sont invalides","result" => []);
 else if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     $message = array("status" => 200, "response" => "Options ok","data" => []);

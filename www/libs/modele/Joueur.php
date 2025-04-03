@@ -34,19 +34,126 @@ namespace Joueur {
     /**
      * @throws DateMalformedStringException
      */
-    function readActif():array
+    function readByStatut(string $statut):array
     {
         try {
             $connexion = getPDO();
-            $statement = $connexion->prepare("SELECT * FROM Joueur WHERE statut = 'ACTIF' ORDER BY postePrefere, nom");
+            $statement = $connexion->prepare("SELECT * FROM Joueur WHERE statut = :statut ORDER BY postePrefere, nom");
+            $statement->bindParam(':statut',$statut);
             $statement->execute();
-
             return $statement->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
             echo "Erreur lors de la lecture des joueurs: " . $e->getMessage();
         }
         return [];
     }
+
+    function readStats(string $idJoueur = null): array {
+        try {
+            $connexion = getPDO();
+            $query = "SELECT 
+    J.idJoueur, 
+    COALESCE(AVG(P.note), 0) AS avg_note, 
+    CAST(COALESCE(SUM(M.resultat = 'VICTOIRE'), 0) AS UNSIGNED) AS victories, 
+    CONCAT(CAST(COALESCE(SUM(M.resultat = 'VICTOIRE') / NULLIF(COUNT(DISTINCT M.idMatch), 0), 0)AS DECIMAL(10,3)),'%') AS victory_ratio 
+FROM Joueur AS J  -- Include all players
+LEFT JOIN Participer AS P ON J.idJoueur = P.idJoueur
+LEFT JOIN MatchDeRugby AS M ON P.idMatch = M.idMatch AND M.archive = 1
+WHERE (:idJoueur IS NULL OR J.idJoueur = :idJoueur)  -- Conditional filter: Either all players or specific player
+GROUP BY J.idJoueur
+ORDER BY J.idJoueur, victory_ratio DESC, avg_note DESC
+";
+            $statement = $connexion->prepare($query);
+            $statement->bindParam(':idJoueur', $idJoueur);
+
+            $statement->execute();
+            $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+            $grouped_result = [];
+
+//            var_dump($grouped_result);
+            if ($idJoueur !== null) {
+                return array_merge($result[0], readConsecutiveWinsPourJoueur($idJoueur)[0]);
+            } else {
+                foreach ($result as $row){
+                    $idJoueur = $row["idJoueur"];
+                    $grouped_result[$idJoueur] = $row;
+                }
+                foreach (readConsecutiveWins() as $row) {
+                    $grouped_result[$row["idJoueur"]] = array_merge($grouped_result[$row["idJoueur"]],$row);
+                    unset($grouped_result[$row["idJoueur"]]["idJoueur"]);
+                }
+                return $grouped_result;
+            }
+        } catch (PDOException $e) {
+            echo "Erreur lors de la lecture des joueurs: " . $e->getMessage();
+        }
+        return [];
+    }
+
+    function readConsecutiveWinsPourJoueur(string $idJoueur): array {
+        try {
+            $connexion = getPDO();
+            $query = "WITH RankedMatches AS ( 
+    SELECT
+        p.idJoueur,
+        m.idMatch - ROW_NUMBER() OVER (PARTITION BY p.idJoueur ORDER BY m.dateHeure) AS gap_group
+    FROM Participer AS p
+    JOIN MatchDeRugby AS m ON p.idMatch = m.idMatch
+)
+SELECT COALESCE((
+    SELECT MAX(streak)
+    FROM Joueur j
+    LEFT JOIN (
+        SELECT idJoueur, COUNT(*) AS streak
+        FROM RankedMatches
+        GROUP BY idJoueur, gap_group
+    ) AS Streaks ON j.idJoueur = Streaks.idJoueur
+    WHERE j.idJoueur = :idJoueur
+    GROUP BY j.idJoueur
+), 0) AS max_consecutive_matches
+";
+            $statement = $connexion->prepare($query);
+            $statement->bindParam(':idJoueur', $idJoueur);
+            $statement->execute();
+            return $statement->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            return [];
+        }
+    }
+
+    function readConsecutiveWins(): array
+    {
+        try {
+            $connexion = getPDO();
+            $query = 'WITH RankedMatches AS (
+    SELECT
+        p.idJoueur,
+        m.idMatch - ROW_NUMBER() OVER (PARTITION BY p.idJoueur ORDER BY m.dateHeure) AS gap_group
+    FROM Participer AS p
+             JOIN MatchDeRugby AS m ON p.idMatch = m.idMatch
+),
+     Consec_Matchs AS (
+         SELECT j.idJoueur, COALESCE(MAX(streak), 0) AS streak
+         FROM Joueur j
+                  LEFT JOIN (
+             SELECT idJoueur, COUNT(*) AS streak
+             FROM RankedMatches
+             GROUP BY idJoueur, gap_group
+         ) AS Streaks ON j.idJoueur = Streaks.idJoueur
+         GROUP BY j.idJoueur
+     )
+SELECT idJoueur, streak AS max_consecutive_matches
+FROM Consec_Matchs
+';
+            $statement = $connexion->prepare($query);
+            $statement->execute();
+            //            var_dump($grouped_result);
+            return $statement->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            return [];
+        }
+    }
+
 
     function create(array $joueur): string {
         try {
