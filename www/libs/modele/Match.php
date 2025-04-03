@@ -74,7 +74,10 @@ namespace MatchDeRugby {
             $statement = $connexion->prepare("SELECT 
     CAST(COUNT(*) AS UNSIGNED) AS totalMatches, 
     CAST(COALESCE(SUM(resultat = 'VICTOIRE'), 0) AS UNSIGNED) AS matchesWon, 
+    CAST(COALESCE(SUM(resultat = 'DEFAITE'), 0) AS UNSIGNED) AS matchesLoss, 
+    CAST(COALESCE(SUM(resultat = 'NUL'), 0) AS UNSIGNED) AS matchesDrawed, 
     CONCAT(CAST(IFNULL(SUM(resultat = 'VICTOIRE') / NULLIF(SUM(resultat = 'DEFAITE'), 0), 0) AS DECIMAL(10, 3)), '%') AS winLossRatio 
+
 FROM MatchDeRugby;");
             $statement->execute();
             return $statement->fetch(PDO::FETCH_ASSOC);

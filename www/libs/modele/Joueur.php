@@ -92,10 +92,19 @@ LIMIT 5;");
         try {
             $connexion = getPDO();
             $query = "SELECT 
-    J.idJoueur, 
+    J.idJoueur,
+    J.url,
+    J.nom,
+    J.prenom,
+    J.postePrefere,
+    J.dateNaissance,
+    J.estPremiereLigne,
+    J.statut,
     COALESCE(AVG(P.note), 0) AS avg_note, 
-    CAST(COALESCE(SUM(M.resultat = 'VICTOIRE'), 0) AS UNSIGNED) AS victories, 
-    CONCAT(CAST(COALESCE(SUM(M.resultat = 'VICTOIRE') / NULLIF(COUNT(DISTINCT M.idMatch), 0), 0)AS DECIMAL(10,3)),'%') AS victory_ratio 
+    COALESCE(SUM(M.resultat = 'VICTOIRE'), 0) AS victories, 
+    COALESCE(SUM(P.numero < 16),0) AS titulaires, 
+    COALESCE(SUM(P.numero > 15),0) AS remplaçants, 
+    CONCAT(COALESCE(SUM(M.resultat = 'VICTOIRE') / NULLIF(COUNT(DISTINCT M.idMatch), 0), 0),'%') AS victory_ratio 
 FROM Joueur AS J  -- Include all players
 LEFT JOIN Participer AS P ON J.idJoueur = P.idJoueur
 LEFT JOIN MatchDeRugby AS M ON P.idMatch = M.idMatch AND M.archive = 1
@@ -108,16 +117,20 @@ ORDER BY J.idJoueur, victory_ratio DESC, avg_note DESC
 
             $statement->execute();
             $result = $statement->fetchAll(PDO::FETCH_ASSOC);
-            $grouped_result = [];
-
+            foreach ($result as &$row){
+                $row = formatJoueurs($row);
+            }
 //            var_dump($grouped_result);
             if ($idJoueur !== null) {
                 return array_merge($result[0], readConsecutiveWinsPourJoueur($idJoueur)[0]);
             } else {
+                $grouped_result = [];
+                unset($row);
                 foreach ($result as $row){
                     $idJoueur = $row["idJoueur"];
                     $grouped_result[$idJoueur] = $row;
                 }
+                unset($row);
                 foreach (readConsecutiveWins() as $row) {
                     $grouped_result[$row["idJoueur"]] = array_merge($grouped_result[$row["idJoueur"]],$row);
                     unset($grouped_result[$row["idJoueur"]]["idJoueur"]);

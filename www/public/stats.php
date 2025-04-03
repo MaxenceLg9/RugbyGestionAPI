@@ -2,6 +2,7 @@
 
 use function Joueur\statsJoueurs;
 use function Joueur\readStatsIndiv;
+use function MatchDeRugby\readStats;
 
 require_once "../libs/modele/Joueur.php";
 require_once "../libs/modele/Poste.php";
@@ -29,7 +30,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET') {
         $message = array("status" => 200, "response" => "Statistiques pour le Joueur", "data" => readStatsIndiv($_GET["idJoueur"]));
     }
     else
-        $message = array("status" => 200, "response" => "Statistiques pour l'équipe", "data" => array("joueurs" => readStatsIndiv(),"matchs" => \MatchDeRugby\readStats(),"stats" => statsJoueurs()));
+        $message = array("status" => 200, "response" => "Statistiques pour l'équipe", "data" => array("joueurs" => readStatsIndiv(),"matchs" => readStats(),"stats" => statsJoueurs()));
 }
 else if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     $message = array("status" => 200, "response" => "Options ok","data" => []);
