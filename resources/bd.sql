@@ -50,6 +50,7 @@ CREATE TABLE IF NOT EXISTS Participer (
     idJoueur INT NOT NULL,
     numero INT NOT NULL,
     note FLOAT NOT NULL,
+    commentaire VARCHAR(400),
     PRIMARY KEY (idMatch, numero),
     FOREIGN KEY (idMatch) REFERENCES MatchDeRugby(idMatch),
     FOREIGN KEY (idJoueur) REFERENCES Joueur(idJoueur)

@@ -70,12 +70,14 @@ VALUES
 
 INSERT INTO MatchDeRugby (dateHeure, adversaire, lieu, resultat, valider,archive)
 VALUES
-    ('2025-02-03 15:00:00', 'Pays de Galles', 'DOMICILE', 'VICTOIRE', TRUE,TRUE),
+    ('2025-02-03 15:00:00', 'Pays de Galles', 'DOMICILE', NULL, FALSE,FALSE),
     ('2025-02-10 17:30:00', 'Irlande', 'EXTERIEUR', NULL, FALSE,FALSE),
     ('2025-03-02 16:00:00', 'Ecosse', 'DOMICILE', NULL, FALSE,FALSE),
     ('2025-03-09 18:00:00', 'Angleterre', 'EXTERIEUR', NULL, FALSE,FALSE),
-    ('2025-03-16 20:45:00', 'Italie', 'DOMICILE', NULL, FALSE,TRUE),
-    ('2024-11-25 15:00:00', 'Australie', 'EXTERIEUR', 'VICTOIRE', TRUE,TRUE),
-    ('2024-10-30 20:00:00', 'Argentine', 'DOMICILE', 'VICTOIRE', TRUE,TRUE),
-    ('2024-08-15 19:00:00', 'Fidji', 'EXTERIEUR', 'VICTOIRE', TRUE,TRUE);
+    ('2025-03-16 20:45:00', 'Italie', 'DOMICILE', NULL, FALSE,FALSE),
+    ('2024-11-25 15:00:00', 'Australie', 'EXTERIEUR',NULL, FALSE,FALSE),
+    ('2024-10-30 20:00:00', 'Argentine', 'DOMICILE', NULL, FALSE,FALSE),
+    ('2024-08-15 19:00:00', 'Fidji', 'EXTERIEUR', NULL, FALSE,FALSE);                                                                                                                     0), 0) AS victory_ratio  FROM Joueur AS J   LEFT JOIN Participer AS P ON J.idJoueur = P.idJoueur LEFT JOIN MatchDeRugby AS M ON P.idMatch = M.idMatch AND M.archive = 1 AND  P.idJoueur = 1 GROUP BY J.idJoueur ORDER BY J.idJoueur, victory_ratio DESC, avg_note DESC;
+
+
 
