@@ -9,7 +9,7 @@ use function MatchDeRugby\isArchiveMatch,MatchDeRugby\archiver;
 use function Joueur\formatJoueurs;
 use function FDM\readByNumeroAndMatch,FDM\read,FDM\readByMatch,FDM\readByJoueur,FDM\fillFDM,FDM\deleteMatch,\FDM\setNotes;
 
-header("Content-Type: application/json");
+header('Content-Type: application/json');
 header('Cross-Origin-Resource-Policy: *');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, PATCH, OPTIONS');
@@ -116,12 +116,9 @@ else if($_SERVER["REQUEST_METHOD"] == 'PATCH') {
 }
 else if($_SERVER['REQUEST_METHOD'] == 'DELETE') {
     if(isset($jsonBody["idMatch"]))
-        if(deleteMatch($jsonBody["idMatch"]))
-            $message = array("status" => 200, "response" => "Feuille de Match supprimé avec succès", "data" => readByMatch($jsonBody["idMatch"]));
-        else
-            $message = array("status" => 200, "response" => "Erreur lors de la suppression de la Feuille de Match", "data" => []);
+        $message = array("status" => 200, "response" => "Feuille de Match supprimé avec succès", "result" => deleteMatch($jsonBody["idMatch"]));
     else
-        $message = array("status" => 400, "response" => "Les paramètres sont invalides","data" => []);
+        $message = array("status" => 400, "response" => "Les paramètres sont invalides", "result" => []);
 }
 else if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     $message = array("status" => 200, "response" => "Options ok","data" => []);

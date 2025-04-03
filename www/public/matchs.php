@@ -5,7 +5,7 @@ require_once $_SERVER["DOCUMENT_ROOT"]."../libs/modele/Lieu.php";
 
 use function MatchDeRugby\delete, MatchDeRugby\create, MatchDeRugby\read, MatchDeRugby\readById, MatchDeRugby\update,MatchDeRugby\validerMatch,MatchDeRugby\formatMatchs;
 
-header("Content-Type: application/json");
+header('Content-Type: application/json');
 header('Cross-Origin-Resource-Policy: *');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, PATCH, OPTIONS');
@@ -63,9 +63,9 @@ else if($_SERVER["REQUEST_METHOD"] == 'PATCH')//validation du résultat
 
 else if($_SERVER['REQUEST_METHOD'] == 'DELETE')//suppression du match
     if(isset($jsonBody["idMatch"]))
-        $message = array("status" => 200, "response" => "Match supprimé avec succès", "data" => delete($jsonBody["idMatch"]));
+        $message = array("status" => 200, "response" => "Match supprimé avec succès", "result" => delete($jsonBody["idMatch"]));
      else
-        $message = array("status" => 400, "response" => "Les paramètres sont invalides","data" => []);
+        $message = array("status" => 400, "response" => "Les paramètres sont invalides","result" => []);
 else if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     $message = array("status" => 200, "response" => "Options ok","data" => []);
 }

@@ -6,7 +6,7 @@ require_once "../libs/modele/Statut.php";
 
 use function Joueur\update,Joueur\delete,Joueur\create,Joueur\readById,Joueur\read,Joueur\readBynumeroLicence,Joueur\readNonParticiperMatch,Joueur\readOnMatch,Joueur\formatJoueurs;
 
-header('Content-Type: application/json; charset=utf-8');
+header('Content-Type: application/json');
 header('Cross-Origin-Resource-Policy: *');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, PATCH, OPTIONS');
@@ -83,12 +83,9 @@ else if($_SERVER["REQUEST_METHOD"] == 'PUT') {
 }
 else if($_SERVER['REQUEST_METHOD'] == 'DELETE') {
     if(isset($jsonBody["idJoueur"])){
-        if(delete($jsonBody["idJoueur"]))
-            $message = array("status" => 200, "response" => "Joueur supprimé avec succès", "data" => []);
-        else
-            $message = array("status" => 200, "response" => "Erreur lors de la suppression du joueur", "data" => []);
+        $message = array("status" => 200, "response" => "Joueur supprimé avec succès", "result" => delete($jsonBody["idJoueur"]));
     } else {
-        $message = array("status" => 400, "response" => "Les paramètres sont invalides", "data" => []);
+        $message = array("status" => 400, "response" => "Les paramètres sont invalides", "result" => []);
     }
 }
 else if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
