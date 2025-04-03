@@ -48,7 +48,47 @@ namespace Joueur {
         return [];
     }
 
-    function readStats(string $idJoueur = null): array {
+    function statsJoueurs(): array
+    {
+        try {
+            $connexion = getPDO();
+            $statement = $connexion->prepare(
+                "SELECT COALESCE(COUNT(DISTINCT idJoueur),0) as differents_joueurs FROM Participer");
+            $statement->execute();
+
+            $rs = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+            $statement = $connexion->prepare(
+                "SELECT COALESCE(COUNT(DISTINCT idJoueur),0) as actifs_joueurs FROM Joueur WHERE statut = 'ACTIF'");
+            $statement->execute();
+
+            return array_merge(array_merge($statement->fetchAll(PDO::FETCH_ASSOC)[0],$rs[0]),array("joueurs" => readJoueursPlusUtilises()));
+        } catch (PDOException $e) {
+            echo "Erreur DISTINCT: " . $e->getMessage();
+        }
+        return [];
+    }
+
+    function readJoueursPlusUtilises() : array {
+        try {
+            $connexion = getPDO();
+            $statement = $connexion->prepare(
+                "SELECT P.idJoueur, COUNT(*) AS matchs_joues
+FROM Participer AS P
+JOIN Joueur AS J ON J.idJoueur = P.idJoueur
+GROUP BY P.idJoueur
+ORDER BY COUNT(*) DESC
+LIMIT 5;");
+            $statement->execute();
+
+            return empty($statement->fetchAll(PDO::FETCH_ASSOC)) ? [] : $statement->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            echo "Erreur DISTINCT: " . $e->getMessage();
+        }
+        return [];
+    }
+
+    function readStatsIndiv(string $idJoueur = null): array {
         try {
             $connexion = getPDO();
             $query = "SELECT 

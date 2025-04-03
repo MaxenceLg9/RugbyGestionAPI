@@ -19,7 +19,8 @@ namespace Token {
             'headers' => [
                 'Authorization' => $_COOKIE["token"] ?? "",
                 'Accept' => 'application/json',
-                "Content-Type: application/json"
+                "Content-Type: application/json",
+                "API_TOKEN" => password_hash("", PASSWORD_BCRYPT)
             ]
         ]);
         return json_decode($response->getBody(),true)["valid"];
@@ -40,7 +41,8 @@ namespace Token {
             'headers' => [
                 'Authorization' => $_COOKIE["token"] ?? "",
                 'Accept' => 'application/json',
-                "Content-Type: application/json"
+                "Content-Type: application/json",
+                "API_TOKEN" => password_hash("", PASSWORD_BCRYPT)
             ]
         ]);
         return json_decode($response->getBody(),true)["token"];

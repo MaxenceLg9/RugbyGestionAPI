@@ -1,6 +1,7 @@
 <?php
 
-use function Joueur\readStats;
+use function Joueur\statsJoueurs;
+use function Joueur\readStatsIndiv;
 
 require_once "../libs/modele/Joueur.php";
 require_once "../libs/modele/Poste.php";
@@ -25,10 +26,10 @@ if(!apiVerifyToken()){
 
 if($_SERVER['REQUEST_METHOD'] == 'GET') {
     if(isset($_GET["idJoueur"])) {
-        $message = array("status" => 200, "response" => "Statistiques pour le Joueur", "data" => readStats($_GET["idJoueur"]));
+        $message = array("status" => 200, "response" => "Statistiques pour le Joueur", "data" => readStatsIndiv($_GET["idJoueur"]));
     }
     else
-        $message = array("status" => 200, "response" => "Statistiques pour l'équipe", "data" => array("joueurs" => readStats(),"matchs" => \MatchDeRugby\readStats()));
+        $message = array("status" => 200, "response" => "Statistiques pour l'équipe", "data" => array("joueurs" => readStatsIndiv(),"matchs" => \MatchDeRugby\readStats(),"stats" => statsJoueurs()));
 }
 else if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     $message = array("status" => 200, "response" => "Options ok","data" => []);
