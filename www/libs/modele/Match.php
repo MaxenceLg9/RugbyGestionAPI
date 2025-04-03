@@ -17,7 +17,7 @@ namespace MatchDeRugby {
             $match["resultat"] = \Resultat::fromName($match["resultat"])->value;
         $match["lieu"] = \Lieu::fromName($match["lieu"])->value;
         $date = DateTime::createFromFormat('Y-m-d H:i:s', $match["dateHeure"]);
-        $match["dateHeure"] = $date->format('d/m/Y H:i');
+        $match["dateHeure"] = $date->format('d/m/Y à H:i');
         return $match;
     }
 
@@ -114,7 +114,7 @@ namespace MatchDeRugby {
 
             $statement->execute();
             $row = $statement->fetchAll(PDO::FETCH_ASSOC);
-            return ($row !== false && isset($row['archive'])) ? (bool)$row['archive'] : false;
+            return isset($row[0]) && $row[0]['archive'] == 1;
         } catch (PDOException $e) {
             echo "Erreur isARCHIVE: " . $e->getMessage();
         }
