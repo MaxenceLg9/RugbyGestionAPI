@@ -42,7 +42,7 @@ namespace Token {
                 'Authorization' => $_COOKIE["token"] ?? "",
                 'Accept' => 'application/json',
                 "Content-Type: application/json",
-                "API_TOKEN" => password_hash("", PASSWORD_BCRYPT)
+                "API_TOKEN" => password_hash("1926apiTOKENMaxence2025", PASSWORD_BCRYPT)
             ]
         ]);
         return json_decode($response->getBody(),true)["token"];
