@@ -2,8 +2,9 @@
 require_once "../libs/modele/Joueur.php";
 require_once "../libs/modele/Poste.php";
 require_once "../libs/modele/Statut.php";
+require_once "../libs/modele/Token.php";
 
-
+use function Token\apiVerifyToken;
 use function Joueur\readByStatut;
 use function Joueur\update,Joueur\delete,Joueur\create,Joueur\readById,Joueur\read,Joueur\readBynumeroLicence,Joueur\readNonParticiperMatch,Joueur\readOnMatch,Joueur\formatJoueurs;
 
@@ -14,11 +15,13 @@ header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, PATCH, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type, Authorization');
 
 //check du jeton avec une requête POST sur l'api d'authentification
-/*
-if(!apiVerifyToken()){
 
+if(!apiVerifyToken()){
+    http_response_code(401);
+    echo json_encode(array("status" => 401, "response" => "Token invalide", "data" => []));
+    exit();
 }
-*/
+
 
 $jsonBody = json_decode(file_get_contents('php://input'), true);
 
