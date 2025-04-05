@@ -40,6 +40,6 @@ else if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     //autre : requête non autorisée
     $message = array("status" => 405, "response" => "Méthode non autorisée", "data" => []);
 }
-
+//renvoi de la réponse
 http_response_code($message["status"]);
 die(json_encode($message));

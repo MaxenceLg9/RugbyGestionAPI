@@ -29,12 +29,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
      * @param mixed $jsonBody
      * @return bool
      */
+    // Vérifie si les champs requis sont présents dans le corps de la requête
     function checkFields(mixed $jsonBody): bool {
+        // Vérifie que les champs numeroLicence, nom, prenom, dateNaissance, taille, poids, statut, postePrefere, estPremiereLigne et commentaire sont présents
         return isset($jsonBody["numeroLicence"]) && isset($jsonBody["nom"]) && isset($jsonBody["prenom"]) && isset($jsonBody["dateNaissance"]) &&
             isset($jsonBody["taille"]) && isset($jsonBody["poids"]) && isset($jsonBody["statut"]) && isset($jsonBody["postePrefere"]) &&
             isset($jsonBody["estPremiereLigne"]) && isset($jsonBody["commentaire"]);
     }
 
+    //Vérifie si les valeurs des champs sont valides, donc que Poste et Statut existent, que la taille et le poids sont des nombres, que estPremiereLigne est un booléen et que la date de naissance est valide
     function checkValues(mixed $jsonBody): bool {
         return Poste::existFromName($jsonBody["postePrefere"]) &&
             Statut::existFromName($jsonBody["statut"]) &&
@@ -43,19 +46,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
             checkDateNaissance($jsonBody["dateNaissance"]);
     }
 
+    // Vérifie si le format de la ddn est valide
     function checkDateNaissance(string $date): bool {
         $d = DateTime::createFromFormat('Y-m-d', $date);
         return $d && strtolower($d->format('Y-m-d')) === strtolower($date);
     }
 
+    // Vérifie si le corps de la requête contient les champs requis et que les valeurs sont valides
     function checkBody(mixed $jsonBody): bool {
         return checkFields($jsonBody) && checkValues($jsonBody);
     }
 
     // Si la méthode de la requête est GET, récupère les joueurs
     if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+        // Si l'ID du joueur est présent dans la requête, récupère le joueur correspondant
         if (isset($_GET["idJoueur"])) {
-            $message = array("status" => 200, "response" => "Joueur récupéré avec succès", "data" => readById($_GET["idJoueur"]));
+            if(existJoueur($_GET["idJoueur"])){
+                $message = array("status" => 200, "response" => "Joueur récupéré avec succès", "data" => readById($_GET["idJoueur"]));
+            } else {
+                $message = array("status" => 404, "response" => "Joueur non trouvé", "data" => []);
+            }
         } else if (isset($_GET["numeroLicence"])) {
             $message = array("status" => 200, "response" => "Joueur récupéré avec succès", "data" => readBynumeroLicence($_GET["numeroLicence"]));
         } else if (isset($_GET["idMatch"])) {
