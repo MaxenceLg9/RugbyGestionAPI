@@ -38,6 +38,18 @@ namespace FDM {
         return readByMatch($fdm["idMatch"]);
     }
 
+    function existFDM(string $idMatch): bool {
+        try {
+            $connexion = getPDO();
+            $statement = $connexion->prepare("SELECT COUNT(*) FROM Participer WHERE idMatch = :idMatch");
+            $statement->bindParam(':idMatch', $idMatch);
+            $statement->execute();
+            return $statement->fetchColumn() > 0;
+        } catch (PDOException $e) {
+            echo "Erreur lors de la vérification de l'existence du FDM: " . $e->getMessage();
+            return false;
+        }
+    }
     function create(array $feuilles, string $idMatch): void {
         try {
             $connexion = getPDO();

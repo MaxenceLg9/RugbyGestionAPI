@@ -21,6 +21,19 @@ namespace MatchDeRugby {
         return $match;
     }
 
+    function existMatch(string $idMatch) : bool {
+        try {
+            $connexion = getPDO();
+            $statement = $connexion->prepare("SELECT COUNT(*) FROM MatchDeRugby WHERE idMatch = :idMatch");
+            $statement->bindParam(':idMatch', $idMatch);
+            $statement->execute();
+            return $statement->fetchColumn() > 0;
+        } catch (PDOException $e) {
+            echo "Erreur lors de la vérification de l'existence du match: " . $e->getMessage();
+            return false;
+        }
+    }
+
     function create(array $match): string {
         try {
             $connexion = getPDO();
@@ -173,7 +186,21 @@ FROM MatchDeRugby;");
     {
         try {
             $connexion = getPDO();
-            $statement = $connexion->prepare("SELECT * FROM MatchDeRugby WHERE resultat is not null ORDER BY dateHeure LIMIT ?");
+            $statement = $connexion->prepare("SELECT * FROM MatchDeRugby WHERE valider = 1 ORDER BY dateHeure DESC LIMIT ?");
+            $statement->bindValue(1, $limit, PDO::PARAM_INT);
+            $statement->execute();
+            return $statement->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            echo "Erreur lors de la lecture des matches: " . $e->getMessage();
+        }
+        return [];
+    }
+
+    function readMatchAVenir(int $limit): array
+    {
+        try {
+            $connexion = getPDO();
+            $statement = $connexion->prepare("SELECT * FROM MatchDeRugby WHERE valider != 1 ORDER BY dateHeure ASC LIMIT ?");
             $statement->bindValue(1, $limit, PDO::PARAM_INT);
             $statement->execute();
             return $statement->fetchAll(PDO::FETCH_ASSOC);
@@ -194,7 +221,6 @@ FROM MatchDeRugby;");
             $statement->bindParam(':resultat', $match["resultat"]);
 
             return $statement->execute();
-            echo "Match mis à jour avec succès\n";
         } catch (PDOException $e) {
             echo "Erreur lors de la mise à jour du match: " . $e->getMessage();
             return false;
