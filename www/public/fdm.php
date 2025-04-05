@@ -3,11 +3,13 @@
 require_once $_SERVER["DOCUMENT_ROOT"]."../libs/modele/FDM.php";
 require_once $_SERVER["DOCUMENT_ROOT"]."../libs/modele/Match.php";
 require_once $_SERVER["DOCUMENT_ROOT"]."../libs/modele/Joueur.php";
+require_once $_SERVER["DOCUMENT_ROOT"]."../libs/modele/Token.php";
 
 use function MatchDeRugby\formatMatchs;
 use function MatchDeRugby\isArchiveMatch,MatchDeRugby\archiver;
 use function Joueur\formatJoueurs;
 use function FDM\readByNumeroAndMatch,FDM\read,FDM\readByMatch,FDM\readByJoueur,FDM\fillFDM,FDM\deleteMatch,\FDM\setNotes;
+use function Token\apiVerifyToken;
 
 header('Content-Type: application/json');
 header('Cross-Origin-Resource-Policy: *');
@@ -16,11 +18,7 @@ header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, PATCH, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type, Authorization');
 
 //check du jeton avec une requête POST sur l'api d'authentification
-/*
-if(!apiVerifyToken()){
-
-}
-*/
+apiVerifyToken();
 
 $jsonBody = json_decode(file_get_contents('php://input'), true);
 

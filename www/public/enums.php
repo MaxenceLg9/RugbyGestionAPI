@@ -1,15 +1,20 @@
 <?php
 
+use function Token\apiVerifyToken;
+
 require_once $_SERVER["DOCUMENT_ROOT"]."../libs/modele/Poste.php";
 require_once $_SERVER["DOCUMENT_ROOT"]."../libs/modele/Resultat.php";
 require_once $_SERVER["DOCUMENT_ROOT"]."../libs/modele/Statut.php";
 require_once $_SERVER["DOCUMENT_ROOT"]."../libs/modele/Lieu.php";
+require_once $_SERVER["DOCUMENT_ROOT"]."../libs/modele/Token.php";
 
 header("Content-Type: application/json");
 header('Cross-Origin-Resource-Policy: *');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, PATCH, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type, Authorization');
+
+apiVerifyToken();
 
 if($_SERVER['REQUEST_METHOD'] == 'GET') {
     if(isset($_GET["value"])){

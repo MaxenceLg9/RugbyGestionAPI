@@ -4,9 +4,11 @@ require_once "../libs/modele/Poste.php";
 require_once "../libs/modele/Statut.php";
 require_once "../libs/modele/Token.php";
 
-use function Token\apiVerifyToken;
+
+use function Joueur\existJoueur;
 use function Joueur\readByStatut;
 use function Joueur\update,Joueur\delete,Joueur\create,Joueur\readById,Joueur\read,Joueur\readBynumeroLicence,Joueur\readNonParticiperMatch,Joueur\readOnMatch,Joueur\formatJoueurs;
+use function Token\apiVerifyToken;
 
 header('Content-Type: application/json');
 header('Cross-Origin-Resource-Policy: *');
@@ -15,12 +17,8 @@ header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, PATCH, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type, Authorization');
 
 //check du jeton avec une requête POST sur l'api d'authentification
+apiVerifyToken();
 
-if(!apiVerifyToken()){
-    http_response_code(401);
-    echo json_encode(array("status" => 401, "response" => "Token invalide", "data" => []));
-    exit();
-}
 
 
 $jsonBody = json_decode(file_get_contents('php://input'), true);
@@ -90,7 +88,11 @@ else if($_SERVER["REQUEST_METHOD"] == 'PUT') {
 }
 else if($_SERVER['REQUEST_METHOD'] == 'DELETE') {
     if(isset($jsonBody["idJoueur"])){
-        $message = array("status" => 200, "response" => "Joueur supprimé avec succès", "result" => delete($jsonBody["idJoueur"]));
+        if(existJoueur($jsonBody["idJoueur"])){
+            $message = array("status" => 200, "response" => "Joueur supprimé avec succès", "result" => delete($jsonBody["idJoueur"]));
+        } else {
+            $message = array("status" => 404, "response" => "Joueur non trouvé", "result" => []);
+        }
     } else {
         $message = array("status" => 400, "response" => "Les paramètres sont invalides", "result" => []);
     }

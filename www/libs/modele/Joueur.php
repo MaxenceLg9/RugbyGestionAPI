@@ -12,6 +12,13 @@ namespace Joueur {
     require_once $_SERVER["DOCUMENT_ROOT"]."../libs/modele/Poste.php";
     require_once $_SERVER["DOCUMENT_ROOT"]."../libs/modele/Statut.php";
 
+
+    //formattage des joueurs pour avoir des données propres :
+    // - url : on vérifie si l'image existe, sinon on met une image par défaut : dans la bd c'est le nom du fichier, mais c'est une url qui est renvoyée
+    // - dateNaissance : on formate la date au format dd/mm/yyyy
+    // - estPremiereLigne : on met "Oui" ou "Non" au lieu de 0 ou 1
+    // - postePrefere : on met le nom du poste au lieu de l'id
+    // - statut : on met le nom du statut au lieu de l'id
     function formatJoueurs(mixed $joueurs): mixed
     {
         if(!isset($joueurs["url"])) {
@@ -34,6 +41,7 @@ namespace Joueur {
     /**
      * @throws DateMalformedStringException
      */
+    // récupération de tous les joueurs ayant un statut donné
     function readByStatut(string $statut):array
     {
         try {
@@ -88,23 +96,24 @@ LIMIT 5;");
         return [];
     }
 
+    //récupère les stats d'un joueur ou de tous les joueurs :
+    // si idJoueur est null, on récupère tous les joueurs
+    // Pour chaque joueur :
+    // On récupère toutes les colonnes de la table Joueur
+    // On récupère la moyenne des notes, le nombre de victoires, le nombre de fois où il a été 'titulaire' / 'remplaçant'
+    // On récupère le ratio de victoires
+    // On récupère le nombre total de matchs joués
     function readStatsIndiv(string $idJoueur = null): array {
         try {
             $connexion = getPDO();
             $query = "SELECT 
-    J.idJoueur,
-    J.url,
-    J.nom,
-    J.prenom,
-    J.postePrefere,
-    J.dateNaissance,
-    J.estPremiereLigne,
-    J.statut,
+    J.*,
     COALESCE(AVG(P.note), 0) AS avg_note, 
     COALESCE(SUM(M.resultat = 'VICTOIRE'), 0) AS victories, 
     COALESCE(SUM(P.numero < 16),0) AS titulaires, 
     COALESCE(SUM(P.numero > 15),0) AS remplaçants, 
-    CONCAT(COALESCE(SUM(M.resultat = 'VICTOIRE') / NULLIF(COUNT(DISTINCT M.idMatch), 0), 0),'%') AS victory_ratio 
+    CONCAT(COALESCE(SUM(M.resultat = 'VICTOIRE') / NULLIF(COUNT(DISTINCT M.idMatch), 0), 0),'%') AS victory_ratio,
+    COALESCE(COUNT(DISTINCT M.idMatch), 0) AS totalMatches
 FROM Joueur AS J  -- Include all players
 LEFT JOIN Participer AS P ON J.idJoueur = P.idJoueur
 LEFT JOIN MatchDeRugby AS M ON P.idMatch = M.idMatch AND M.archive = 1
@@ -118,12 +127,15 @@ ORDER BY J.idJoueur, victory_ratio DESC, avg_note DESC
             $statement->execute();
             $result = $statement->fetchAll(PDO::FETCH_ASSOC);
             foreach ($result as &$row){
+                //formattage des données du joueur pour avoir des données "propres"
                 $row = formatJoueurs($row);
             }
-//            var_dump($grouped_result);
             if ($idJoueur !== null) {
+                //dans le cas où c'est pour un joueur particulier, on merge les tableaux de stats du premier élément renvoyé
                 return array_merge($result[0], readConsecutiveWinsPourJoueur($idJoueur)[0]);
             } else {
+                //sinon pour tous les joueurs : formattage
+                //on regroupe les joueurs par idJoueur sous forme de tableau associatif
                 $grouped_result = [];
                 unset($row);
                 foreach ($result as $row){
@@ -131,6 +143,8 @@ ORDER BY J.idJoueur, victory_ratio DESC, avg_note DESC
                     $grouped_result[$idJoueur] = $row;
                 }
                 unset($row);
+                //on récupère les stats de la fonction readConsecutiveWins
+                //et on les merge avec le tableau associatif
                 foreach (readConsecutiveWins() as $row) {
                     $grouped_result[$row["idJoueur"]] = array_merge($grouped_result[$row["idJoueur"]],$row);
                     unset($grouped_result[$row["idJoueur"]]["idJoueur"]);
@@ -143,6 +157,7 @@ ORDER BY J.idJoueur, victory_ratio DESC, avg_note DESC
         return [];
     }
 
+    //récupération du nombre max de matchs consécutifs gagnés pour un joueur en particulier
     function readConsecutiveWinsPourJoueur(string $idJoueur): array {
         try {
             $connexion = getPDO();
@@ -174,6 +189,7 @@ SELECT COALESCE((
         }
     }
 
+    //récupération du nombre max de matchs consécutifs gagnés pour tous les joueurs
     function readConsecutiveWins(): array
     {
         try {
@@ -208,6 +224,7 @@ FROM Consec_Matchs
     }
 
 
+    //méthode pour créer un joueur
     function create(array $joueur): string {
         try {
             $connexion = getPDO();
@@ -216,6 +233,7 @@ FROM Consec_Matchs
                    VALUES (:numeroLicence, :nom, :prenom, :dateNaissance, :taille, :poids, :statut, :postePrefere, :estPremiereLigne, :commentaire, :url)");
 
             bindParams($joueur, $statement);
+            //url sous format nom_prenom_ddn pour une unicité
             $url = $joueur["nom"] . "_" . $joueur["prenom"] . "_" . $joueur["dateNaissance"];
             $statement->bindParam(':url', $url);
             $statement->execute();
@@ -227,7 +245,22 @@ FROM Consec_Matchs
         return "";
     }
 
+    //fonction pour vérifier l'existence d'un joueur
+    function existJoueur(string $idJoueur) : bool {
+        try {
+            $connexion = getPDO();
+            $statement = $connexion->prepare("SELECT COUNT(*) FROM Joueur WHERE idJoueur = :idJoueur");
+            $statement->bindParam(':idJoueur', $idJoueur);
+            $statement->execute();
+            return $statement->fetchColumn() > 0;
+        } catch (PDOException $e) {
+            echo "Erreur lors de la vérification de l'existence du joueur: " . $e->getMessage();
+        }
+        return false;
+    }
 
+
+    //récupère tous les joueurs
     function read(): array {
         try {
             $connexion = getPDO();
@@ -242,6 +275,7 @@ FROM Consec_Matchs
     }
 
 
+    //récupère un joueur par son numéro de licence
     function readBynumeroLicence(string $numeroLicence): array {
         try {
             $connexion = getPDO();
@@ -257,6 +291,7 @@ FROM Consec_Matchs
     }
 
 
+    //récupère tous les joueurs qui ne participent pas à un match donnée : idMatch
     function readNonParticiperMatch(string $idMatch): array {
         try {
             $connection = getPDO();
@@ -272,6 +307,7 @@ FROM Consec_Matchs
         return [];
     }
 
+    //récupère tous les joueurs qui participent à un match donnée : idMatch
     function readOnMatch(string $idMatch): array {
         try {
             $connection = getPDO();
@@ -293,6 +329,7 @@ FROM Consec_Matchs
         return [];
     }
 
+    //fonction pour mettre à jour un joueur
     function update(array $joueur): bool {
         try {
             $connexion = getPDO();
@@ -312,6 +349,7 @@ FROM Consec_Matchs
         return false;
     }
 
+    //fonction pour supprimer un joueur : on supprime ses fdm + sa ligne dans la table Joueur
     function delete(string $joueur): bool {
         try {
             $connexion = getPDO();
@@ -326,6 +364,7 @@ FROM Consec_Matchs
         return false;
     }
 
+    //fonction pour récupérer un joueur par son id
     function readById(string $idJoueur): array {
         try {
             $connexion = getPDO();
@@ -345,6 +384,7 @@ FROM Consec_Matchs
      * @param bool|PDOStatement $statement
      * @return void
      */
+    //fonction pour lier les paramètres d'un joueur à une requête préparée
     function bindParams(array $joueur, bool|PDOStatement $statement): void {
         $statement->bindParam(':numeroLicence', $joueur["numeroLicence"]);
         $statement->bindParam(':nom', $joueur["nom"]);
