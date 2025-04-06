@@ -31,14 +31,14 @@ header('Content-Type: text/html; charset=UTF-8');
             max-width: 1000px;
             margin: auto;
         }
-        .example, .code-block {
+        .Exemple, .code-block {
             background-color: #333;
             color: #fff;
             padding: 10px;
             border-radius: 5px;
             overflow-x: auto;
         }
-        .example {
+        .Exemple {
             margin-bottom: 20px;
         }
         .parameter-list {
@@ -65,32 +65,32 @@ header('Content-Type: text/html; charset=UTF-8');
     <p><strong>Les données renvoyés sont formatées</strong></p>
 
     <h2>Authentication</h2>
-    <p>This endpoint requires **Bearer Token** authentication for security purposes.</p>
+    <p>Une authentification de type JWT Bearer Token est requise</p>
 
     <h2>Methods</h2>
     <h3>GET</h3>
     <p>The GET method permet de récupérer des matchs selon les critères</p>
 
-    <h2>Parameters: Request</h2>
-    <p>The following query parameter can be used:</p>
+    <h2>Paramêtres de requête</h2>
+    <p>Peuvent être utilisés : </p>
     <ul class="parameter-list">
         <li><strong>#Vide</strong>Renvoie tous les matchs</li>
         <li><strong>idMatch</strong> (optional, string): Renvoie le match défini par l'idMatch</li>
         <li><strong>limit</strong> (optional, string): Renvoie les matchs avec resultats et ceux à venir limités par le paramètre</li></ul>
 
-    <h3>cURL Command Example</h3>
-    <div class="example">
-        <pre class="code-block">curl -X GET "https://yourapi.com/matchs" -H "Authorization: Bearer YOUR_TOKEN"</pre>
+    <h3>cURL Command Exemple</h3>
+    <div class="Exemple">
+        <pre class="code-block">curl -X GET "https://rugbygestionapi.alaysdata.net/matchs" -H "Authorization: Bearer YOUR_TOKEN"</pre>
         <p>For player-specific statistics:</p>
-        <pre class="code-block">curl -X GET "https://yourapi.com/matchs?idMatch=4" -H "Authorization: Bearer YOUR_TOKEN"</pre>
+        <pre class="code-block">curl -X GET "https://rugbygestionapi.alaysdata.net/matchs?idMatch=4" -H "Authorization: Bearer YOUR_TOKEN"</pre>
         <p>For player-specific statistics:</p>
-        <pre class="code-block">curl -X GET "https://yourapi.com/matchs?limit=4" -H "Authorization: Bearer YOUR_TOKEN"</pre>
+        <pre class="code-block">curl -X GET "https://rugbygestionapi.alaysdata.net/matchs?limit=4" -H "Authorization: Bearer YOUR_TOKEN"</pre>
     </div>
 
-    <h2>Response</h2>
-    <p>Here are some example responses for different requests:</p>
+    <h2>Réponse</h2>
+    <p>Voici des exemples des différentes requêtes</p>
 
-    <h3>Example 1: Request `/matchs?limit=?` : Pour les matchs à venir et ceux ayant un résultat</h3>
+    <h3>Exemple 1: Requête `/matchs?limit=?` : Pour les matchs à venir et ceux ayant un résultat</h3>
     <p>Renvoie une liste de matchs dans resultats & avenir</p>
     <div class="response">
         <pre class="code-block">
@@ -124,7 +124,7 @@ header('Content-Type: text/html; charset=UTF-8');
         </pre>
     </div>
 
-    <h3>Example 2: /matchs (avec param. idMatch ou non)</h3>
+    <h3>Exemple 2: Requête /matchs (avec param. idMatch ou non)</h3>
     <p>Renvoie une liste de matchs</p>
     <div class="response">
         <pre class="code-block">
@@ -149,7 +149,7 @@ header('Content-Type: text/html; charset=UTF-8');
     <h3>POST</h3>
     <p>La méthode POST créé un match</p>
 
-    <h2>Parameters: Body</h2>
+    <h2>Paramêtres du corps de Requête</h2>
     <p>Les paramètres suivants doivent être définis pour créer un match</p>
     <ul class="parameter-list">
         <li><strong>dateHeure</strong> (DateTime): </li>
@@ -158,8 +158,7 @@ header('Content-Type: text/html; charset=UTF-8');
     </ul>
 
     <h2>Body</h2>
-    <p>Here are some example responses for different requests:</p>
-    <h3>Example 1: Request `/matchs` : Pour n'importe quel paramètre/méthode</h3>
+    <h3>Exemple 1: Requête `/matchs` : Pour n'importe quel paramètre/méthode</h3>
     <p>Renvoie une liste de matchs</p>
     <div class="response">
         <pre class="code-block">
@@ -171,9 +170,9 @@ header('Content-Type: text/html; charset=UTF-8');
         </pre>
     </div>
 
-    <h2>Response</h2>
-    <p>Here are some example responses for different requests:</p>
-    <h3>Example 1: Request `/matchs` : Pour n'importe quel paramètre/méthode</h3>
+    <h2>Réponse</h2>
+    <p>Voici des exemples des différentes requêtes</p>
+    <h3>Exemple 1: Requête `/matchs` : Pour n'importe quel paramètre/méthode</h3>
     <p>Renvoie le match créé</p>
     <div class="response">
         <pre class="code-block">
@@ -198,7 +197,7 @@ header('Content-Type: text/html; charset=UTF-8');
     <h3>PUT</h3>
     <p>La méthode PUT modifie un match</p>
 
-    <h2>Parameters: Body</h2>
+    <h2>Paramêtres du corps de Requête</h2>
     <p>Les paramètres suivants doivent être définis pour modifier un match</p>
     <ul class="parameter-list">
         <li><strong>idMatch</strong> (string): </li>
@@ -208,8 +207,7 @@ header('Content-Type: text/html; charset=UTF-8');
     </ul>
 
     <h2>Body</h2>
-    <p>Here are some example responses for different requests:</p>
-    <h3>Example 1: Request `/matchs` : Pour n'importe quel paramètre/méthode</h3>
+    <h3>Exemple 1: Requête `/matchs` : Pour n'importe quel paramètre/méthode</h3>
     <div class="response">
         <pre class="code-block">
             {
@@ -221,9 +219,9 @@ header('Content-Type: text/html; charset=UTF-8');
         </pre>
     </div>
 
-    <h2>Response</h2>
-    <p>Here are some example responses for different requests:</p>
-    <h3>Example 1: Request `/matchs` : Pour n'importe quel paramètre/méthode</h3>
+    <h2>Réponse</h2>
+    <p>Voici des exemples des différentes requêtes</p>
+    <h3>Exemple 1: Requête `/matchs` : Pour n'importe quel paramètre/méthode</h3>
     <p>Renvoie le match</p>
     <div class="response">
         <pre class="code-block">
@@ -248,7 +246,7 @@ header('Content-Type: text/html; charset=UTF-8');
     <h3>PATCH</h3>
     <p>La méthode PATCH valide un match et met un résultat</p>
 
-    <h2>Parameters: Body</h2>
+    <h2>Paramêtres du corps de Requête</h2>
     <p>Les paramètres suivants doivent être définis pour valider un match</p>
     <ul class="parameter-list">
         <li><strong>idMatch</strong> (string): </li>
@@ -256,8 +254,7 @@ header('Content-Type: text/html; charset=UTF-8');
     </ul>
 
     <h2>Body</h2>
-    <p>Here are some example responses for different requests:</p>
-    <h3>Example 1: Request `/matchs` : Pour n'importe quel paramètre/méthode</h3>
+    <h3>Exemple 1: Requête `/matchs` : Pour n'importe quel paramètre/méthode</h3>
     <div class="response">
         <pre class="code-block">
             {
@@ -267,9 +264,9 @@ header('Content-Type: text/html; charset=UTF-8');
         </pre>
     </div>
 
-    <h2>Response</h2>
-    <p>Here are some example responses for different requests:</p>
-    <h3>Example 1: Request `/matchs` : Pour n'importe quel paramètre/méthode</h3>
+    <h2>Réponse</h2>
+    <p>Voici des exemples des différentes requêtes</p>
+    <h3>Exemple 1: Requête `/matchs` : Pour n'importe quel paramètre/méthode</h3>
     <p>Renvoie le match</p>
     <div class="response">
         <pre class="code-block">
@@ -294,15 +291,15 @@ header('Content-Type: text/html; charset=UTF-8');
     <h3>DELETE</h3>
     <p>La méthode DELETE supprime un match</p>
 
-    <h2>Parameters: Body</h2>
+    <h2>Paramêtres du corps de Requête</h2>
     <p>Les paramètres suivants doivent être définis pour supprimer un match</p>
     <ul class="parameter-list">
         <li><strong>idMatch</strong> (string): </li>
     </ul>
 
     <h2>Body</h2>
-    <p>Here are some example responses for different requests:</p>
-    <h3>Example 1: Request `/matchs` : Pour n'importe quel paramètre/méthode</h3>
+    <p>Here are some Exemple responses for different requests:</p>
+    <h3>Exemple 1: Request `/matchs` : Pour n'importe quel paramètre/méthode</h3>
     <p>Body</p>
     <div class="response">
         <pre class="code-block">
@@ -312,9 +309,9 @@ header('Content-Type: text/html; charset=UTF-8');
         </pre>
     </div>
 
-    <h2>Response</h2>
-    <p>Here are some example responses for different requests:</p>
-    <h3>Example 1: Request `/matchs` : Pour n'importe quel paramètre/méthode</h3>
+    <h2>Réponse</h2>
+    <p>Voici des exemples des différentes requêtes</p>
+    <h3>Exemple 1: Request `/matchs` : Pour n'importe quel paramètre/méthode</h3>
     <p>Renvoie un boolean sur l'état de la suppression</p>
     <div class="response">
         <pre class="code-block">
@@ -327,10 +324,10 @@ header('Content-Type: text/html; charset=UTF-8');
     </div>
 
 
-    <h2>Failures</h2>
-    <p>The following error codes may be returned in certain situations:</p>
+    <h2>Echec</h2>
+    <p>Sont renvoyés dans certains cas, les erreurs:</p>
     <ul>
-        <li><strong>401 Unauthorized</strong>: If the Bearer token is missing or invalid.</li>
+        <li><strong>401 Unauthorized</strong>:Token Invalide</li>
         <li><strong>404 Not Found</strong>:Si le joueur avec l'idMatch n'existe pas (DELETE)</li>
         <li><strong>400 Bad Request</strong>Si les paramètres dans le corps de la requête ne sont pas définis ou au mauvais format</li>
         <li><strong>405 Method Not Allowed</strong>:Si la méthode n'est pas GET,PUT,PATCH,DELETE,POST,OPTIONS</li>
