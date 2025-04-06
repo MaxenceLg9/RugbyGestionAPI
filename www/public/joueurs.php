@@ -107,9 +107,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     } else {
         $message = array("status" => 405, "response" => "Méthode non autorisée", "data" => []);
     }
-
-
-
+    
     if (isset($message["data"]["disponibles"])) {
         foreach ($message["data"]["disponibles"] as &$joueur) {
             $joueur = formatJoueurs($joueur);

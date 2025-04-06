@@ -130,7 +130,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
                 $message = array("status" => 422, "response" => "Impossible de mettre à jour la feuille de match : archivée", "data" => []);
             } else {
                 // Crée la fdm et renvoie la fdm créée
-                $message = array("status" => 201, "response" => "Feuille de Match créé avec succès", "data" => fillFDM($jsonBody));
+                $message = array("status" => 201, "response" => "Feuille de Match créée avec succès", "data" => fillFDM($jsonBody));
             }
         } else {
             // Si le corps de la requête ne contient pas les champs requis, renvoie une réponse d'erreur
@@ -156,7 +156,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
                 $message = array("status" => 422, "response" => "Impossible de mettre des notes car la feuille de match n'est pas validée", "data" => []);
             } else {
                 // Modifie les notes de la fdm et renvoie la fdm modifiée
-                $message = array("status" => 200, "response" => "Feuille de Match modifié avec succès", "data" => setNotes($jsonBody["feuilles"], $jsonBody["idMatch"]));
+                $message = array("status" => 200, "response" => "Feuille de Match modifiée avec succès", "data" => setNotes($jsonBody["feuilles"], $jsonBody["idMatch"]));
             }
         } else {
             // Si le corps de la requête ne contient pas les champs requis, renvoie une réponse d'erreur
@@ -169,7 +169,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
             // Vérifie qu'une feuille de match existe pour le match
             if(existFDM($jsonBody["idMatch"])){
                 // Renvoie un message avec un boolean indiquant si la fdm a été supprimée avec succès
-                $message = array("status" => 200, "response" => "Feuille de Match supprimé avec succès", "result" => deleteMatch($jsonBody["idMatch"]));
+                $message = array("status" => 200, "response" => "Feuille de Match supprimée avec succès", "result" => deleteMatch($jsonBody["idMatch"]));
             } else {
                 // Si la fdm n'existe pas, renvoie une réponse d'erreur
                 $message = array("status" => 404, "response" => "Feuille de Match non trouvée", "result" => []);
