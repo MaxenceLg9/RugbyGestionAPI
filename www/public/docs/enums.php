@@ -60,20 +60,20 @@ header('Content-Type: text/html; charset=UTF-8');
 </header>
 
 <div class="content">
-    <h2>Endpoint Description</h2>
-    <p>The `/enums` endpoint retrieves different sets of enumerations, such as "postes," "statuts," "resultats," or "lieux." Each enumeration corresponds to a specific set of key-value pairs that are defined within the API.</p>
+    <h2>Description de l'endpoint</h2>
+    <p>L'endpoint enums permet de récupérer les différents enums utilisés par l'API pour assurer la concordance des données></p>
 
     <h2>Authentication</h2>
-    <p>This endpoint requires **Bearer Token** authentication for security purposes.</p>
+    <p>Une authentification de type JWT Bearer Token est requise</p>
 
-    <h2>Methods</h2>
+    <h2>Methodes</h2>
     <h3>GET</h3>
-    <p>The GET method retrieves a list of key-value pairs corresponding to an enum type (e.g., "postes," "statuts," etc.).</p>
+    <p>La méthode GET permet de récupérer les différents enums utilisés par l'API pour assurer la concordance des données></p>
 
-    <h2>Parameters: Request</h2>
-    <p>The following query parameter is required:</p>
+    <h2>Paramêtres de Requête</h2>
+    <p>Le paramètre suivant est requis</p>
     <ul class="parameter-list">
-        <li><strong>value</strong> (string): Specifies which enum type to retrieve. Valid values are:</li>
+        <li><strong>value</strong> (string): L'enum à récupérer, les valeurs possibles sont</li>
         <ul class="parameter-list">
             <li><code>postes</code>: Retrieves a list of rugby positions.</li>
             <li><code>statuts</code>: Retrieves a list of statuses.</li>
@@ -82,70 +82,78 @@ header('Content-Type: text/html; charset=UTF-8');
         </ul>
     </ul>
 
-    <h3>cURL Command Example</h3>
+    <h3>cURL Command Exemple</h3>
     <div class="example">
         <pre class="code-block">curl -X GET "https://rugbygestionapi.alwaysdata.net/enums?value=postes" -H "Authorization: Bearer YOUR_TOKEN"</pre>
     </div>
 
-    <h2>Response</h2>
-    <p>Here are some example responses for different requests:</p>
+    <h2>Réponse</h2>
+    <p>Voici des exemples des différentes requêtes</p>
 
-    <h3>Example 1: Request `/enums?value=postes`</h3>
+    <h3>Exemple 1: Requête `/enums?value=postes`</h3>
     <div class="response">
-        <pre class="code-block">{
-    "status": 200,
-    "response": "Liste des postes récupérée avec succès",
-    "data": {
-        "PILIER": "Pilier",
-        "TALONNEUR": "Talonneur",
-        "DEUXIEME_LIGNE": "Deuxième ligne",
-        "TROISIEME_LIGNE_AILE": "Troisième ligne aile",
-        "TROISIEME_LIGNE_CENTRE": "Troisième ligne centre",
-        "DEMI_MELEE": "Demi de mêlée",
-        "DEMI_OUVERTURE": "Demi d'ouverture",
-        "CENTRE": "Centre",
-        "AILIER": "Ailier",
-        "ARRIERE": "Arrière"
-    }
-}</pre>
+        <pre class="code-block">
+            {
+                "status": 200,
+                "response": "Liste des postes récupérée avec succès",
+                "data": {
+                    "PILIER": "Pilier",
+                    "TALONNEUR": "Talonneur",
+                    "DEUXIEME_LIGNE": "Deuxième ligne",
+                    "TROISIEME_LIGNE_AILE": "Troisième ligne aile",
+                    "TROISIEME_LIGNE_CENTRE": "Troisième ligne centre",
+                    "DEMI_MELEE": "Demi de mêlée",
+                    "DEMI_OUVERTURE": "Demi d'ouverture",
+                    "CENTRE": "Centre",
+                    "AILIER": "Ailier",
+                    "ARRIERE": "Arrière"
+                }
+            }
+        </pre>
     </div>
 
-    <h3>Example 2: Request `/enums?value=statuts`</h3>
+    <h3>Exemple 2: Requête `/enums?value=statuts`</h3>
     <div class="response">
-        <pre class="code-block">{
-    "status": 200,
-    "response": "Liste des statuts récupérée avec succès",
-    "data": {
-        "ACTIF": "Actif",
-        "INACTIF": "Inactif"
-    }
-}</pre>
+        <pre class="code-block">
+            {
+                "status": 200,
+                "response": "Liste des statuts récupérée avec succès",
+                "data": {
+                    "ACTIF": "Actif",
+                    "INACTIF": "Inactif"
+                }
+            }
+        </pre>
     </div>
 
-    <h3>Example 3: Request `/enums?value=invalid_value` (Invalid Parameter)</h3>
+    <h3>Exemple 3: Requête `/enums?value=invalid_value` (Paramêtre invalide)</h3>
     <div class="response">
-        <pre class="code-block">{
-    "status": 400,
-    "response": "Les paramètres sont invalides",
-    "data": []
-}</pre>
+        <pre class="code-block">
+            {
+                "status": 400,
+                "response": "Les paramètres sont invalides",
+                "data": []
+            }
+        </pre>
     </div>
 
-    <h3>Example 4: Request `/enums` (Missing Parameter)</h3>
+    <h3>Exemple 4: Requête `/enums` (Paramêtre manquant)</h3>
     <div class="response">
-        <pre class="code-block">{
-    "status": 400,
-    "response": "Les paramètres sont invalides",
-    "data": []
-}</pre>
+        <pre class="code-block">
+            {
+                "status": 400,
+                "response": "Les paramètres sont invalides",
+                "data": []
+            }
+        </pre>
     </div>
 
-    <h2>Failures</h2>
-    <p>The following error codes may be returned in certain situations:</p>
+    <h2>Echec</h2>
+    <p>Sont renvoyés dans certains cas, les erreurs:</p>
     <ul>
-        <li><strong>401 Unauthorized</strong>: If the Bearer token is missing or invalid.</li>
-        <li><strong>400 Bad Request</strong>: If the `value` parameter is missing or has an invalid value.</li>
-        <li><strong>405 Method Not Allowed</strong>: If the request method is not GET.</li>
+        <li><strong>401 Unauthorized</strong>:Token Invalide</li>
+        <li><strong>400 Bad Requête</strong>: Le paramètre value n'est pas définie</li>
+        <li><strong>405 Method Not Allowed</strong>: La méthode n'est pas GET/OPTIONS</li>
     </ul>
 </div>
 
