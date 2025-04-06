@@ -31,14 +31,14 @@ header('Content-Type: text/html; charset=UTF-8');
             max-width: 1000px;
             margin: auto;
         }
-        .example, .code-block {
+        .Exemple, .code-block {
             background-color: #333;
             color: #fff;
             padding: 10px;
             border-radius: 5px;
             overflow-x: auto;
         }
-        .example {
+        .Exemple {
             margin-bottom: 20px;
         }
         .parameter-list {
@@ -60,19 +60,19 @@ header('Content-Type: text/html; charset=UTF-8');
 </header>
 
 <div class="content">
-    <h2>Endpoint Description</h2>
+    <h2>Desc de l'endpoint</h2>
     <p>L'endpoint `/joueurs` permet de gérer la structure de donnée "Joueur"</p>
     <p><strong>Les données renvoyés sont formatées</strong></p>
 
     <h2>Authentication</h2>
-    <p>This endpoint requires **Bearer Token** authentication for security purposes.</p>
+    <p>Une authentification de type JWT Bearer Token est requise</p>
 
     <h2>Methods</h2>
     <h3>GET</h3>
     <p>The GET method permet de récupérer des joueurs selon les critères</p>
 
-    <h2>Parameters: Request</h2>
-    <p>The following query parameter can be used:</p>
+    <h2>Paramêtres de Requête</h2>
+    <p>Sont les paramètres suivants</p>
     <ul class="parameter-list">
         <li><strong>#Vide</strong> Renvoie tous les joueurs</li>
         <li><strong>idMatch</strong> (optional, string): The ID of a specific player pour renvoyer le joueur en question</li>
@@ -81,23 +81,23 @@ header('Content-Type: text/html; charset=UTF-8');
         <li><strong>statut</strong> (optional, string): Renvoie les joueurs ayant le statut : Pour plus d'infos : see /enums</li>
     </ul>
 
-    <h3>cURL Command Example</h3>
-    <div class="example">
-        <pre class="code-block">curl -X GET "https://yourapi.com/joueurs" -H "Authorization: Bearer YOUR_TOKEN"</pre>
+    <h3>cURL Command Exemple</h3>
+    <div class="Exemple">
+        <pre class="code-block">curl -X GET "https://rugbygestionapi.alaysdata.net/joueurs" -H "Authorization: Bearer YOUR_TOKEN"</pre>
         <p>For player-specific statistics:</p>
-        <pre class="code-block">curl -X GET "https://yourapi.com/joueurs?idMatch=4" -H "Authorization: Bearer YOUR_TOKEN"</pre>
+        <pre class="code-block">curl -X GET "https://rugbygestionapi.alaysdata.net/joueurs?idMatch=4" -H "Authorization: Bearer YOUR_TOKEN"</pre>
         <p>For player-specific statistics:</p>
-        <pre class="code-block">curl -X GET "https://yourapi.com/joueurs?numeroLicence=4" -H "Authorization: Bearer YOUR_TOKEN"</pre>
+        <pre class="code-block">curl -X GET "https://rugbygestionapi.alaysdata.net/joueurs?numeroLicence=4" -H "Authorization: Bearer YOUR_TOKEN"</pre>
         <p>Pour un statut</p>
-        <pre class="code-block">curl -X GET "https://yourapi.com/joueurs?statut=ACTIF" -H "Authorization: Bearer YOUR_TOKEN"</pre>
+        <pre class="code-block">curl -X GET "https://rugbygestionapi.alaysdata.net/joueurs?statut=ACTIF" -H "Authorization: Bearer YOUR_TOKEN"</pre>
         <p>Pour un idJoueur</p>
-        <pre class="code-block">curl -X GET "https://yourapi.com/joueurs?idJoueur=2" -H "Authorization: Bearer YOUR_TOKEN"</pre>
+        <pre class="code-block">curl -X GET "https://rugbygestionapi.alaysdata.net/joueurs?idJoueur=2" -H "Authorization: Bearer YOUR_TOKEN"</pre>
     </div>
 
-    <h2>Response</h2>
-    <p>Here are some example responses for different requests:</p>
+    <h2>Réponse</h2>
+    <p>Voici des exemples des différentes requêtes</p>
 
-    <h3>Example 1: Request `/joueurs` : Pour n'importe quel paramètre/méthode (Team Statistics)</h3>
+    <h3>Exemple 1: Requête `/joueurs` : Pour n'importe quel paramètre/méthode (Team Statistics)</h3>
     <p>Renvoie une liste de joueurs</p>
     <div class="response">
         <pre class="code-block">
@@ -126,7 +126,7 @@ header('Content-Type: text/html; charset=UTF-8');
     <h3>POST</h3>
     <p>La méthode POST créé un joueur</p>
 
-    <h2>Parameters: Body</h2>
+    <h2>Paramêtres du corps de Requête</h2>
     <p>Les paramètres suivants doivent être définis pour créer un joueur</p>
     <ul class="parameter-list">
         <li><strong>numeroLicence</strong> (string): </li>
@@ -142,8 +142,7 @@ header('Content-Type: text/html; charset=UTF-8');
     </ul>
 
     <h2>Body</h2>
-    <p>Here are some example responses for different requests:</p>
-    <h3>Example 1: Request `/joueurs` : Pour n'importe quel paramètre/méthode</h3>
+    <h3>Exemple 1: Requête `/joueurs` : Pour n'importe quel paramètre/méthode</h3>
     <p>Renvoie une liste de joueurs</p>
     <div class="response">
         <pre class="code-block">
@@ -162,9 +161,9 @@ header('Content-Type: text/html; charset=UTF-8');
         </pre>
     </div>
 
-    <h2>Response</h2>
-    <p>Here are some example responses for different requests:</p>
-    <h3>Example 1: Request `/joueurs` : Pour n'importe quel paramètre/méthode</h3>
+    <h2>Réponse</h2>
+    <p>Voici des exemples des différentes requêtes</p>
+    <h3>Exemple 1: Requête `/joueurs` : Pour n'importe quel paramètre/méthode</h3>
     <p>Renvoie une liste de joueurs</p>
     <div class="response">
         <pre class="code-block">
@@ -193,7 +192,7 @@ header('Content-Type: text/html; charset=UTF-8');
     <h3>PUT</h3>
     <p>La méthode PUT modifie un joueur</p>
 
-    <h2>Parameters: Body</h2>
+    <h2>Paramêtres du corps de Requête</h2>
     <p>Les paramètres suivants doivent être définis pour créer un joueur</p>
     <ul class="parameter-list">
         <li><strong>idJoueur</strong> (string): </li>
@@ -210,8 +209,7 @@ header('Content-Type: text/html; charset=UTF-8');
     </ul>
 
     <h2>Body</h2>
-    <p>Here are some example responses for different requests:</p>
-    <h3>Example 1: Request `/joueurs` : Pour n'importe quel paramètre/méthode</h3>
+    <h3>Exemple 1: Requête `/joueurs` : Pour n'importe quel paramètre/méthode</h3>
     <p>Renvoie une liste de joueurs</p>
     <div class="response">
         <pre class="code-block">
@@ -231,9 +229,9 @@ header('Content-Type: text/html; charset=UTF-8');
         </pre>
     </div>
 
-    <h2>Response</h2>
-    <p>Here are some example responses for different requests:</p>
-    <h3>Example 1: Request `/joueurs` : Pour n'importe quel paramètre/méthode</h3>
+    <h2>Réponse</h2>
+    <p>Voici des exemples des différentes requêtes</p>
+    <h3>Exemple 1: Requête `/joueurs` : Pour n'importe quel paramètre/méthode</h3>
     <p>Renvoie une liste de joueurs</p>
     <div class="response">
         <pre class="code-block">
@@ -262,15 +260,14 @@ header('Content-Type: text/html; charset=UTF-8');
     <h3>DELETE</h3>
     <p>La méthode DELETE supprime un joueur</p>
 
-    <h2>Parameters: Body</h2>
+    <h2>Paramêtres du corps de Requête</h2>
     <p>Les paramètres suivants doivent être définis pour supprimer un joueur</p>
     <ul class="parameter-list">
         <li><strong>idJoueur</strong> (string): </li>
     </ul>
 
     <h2>Body</h2>
-    <p>Here are some example responses for different requests:</p>
-    <h3>Example 1: Request `/joueurs` : Pour n'importe quel paramètre/méthode</h3>
+    <h3>Exemple 1: Requête `/joueurs` : Pour n'importe quel paramètre/méthode</h3>
     <p>Body</p>
     <div class="response">
         <pre class="code-block">
@@ -280,9 +277,9 @@ header('Content-Type: text/html; charset=UTF-8');
         </pre>
     </div>
 
-    <h2>Response</h2>
-    <p>Here are some example responses for different requests:</p>
-    <h3>Example 1: Request `/joueurs` : Pour n'importe quel paramètre/méthode</h3>
+    <h2>Réponse</h2>
+    <p>Voici des exemples des différentes requêtes</p>
+    <h3>Exemple 1: Requête `/joueurs` : Pour n'importe quel paramètre/méthode</h3>
     <p>Renvoie un boolean sur l'état de la suppression</p>
     <div class="response">
         <pre class="code-block">
@@ -295,12 +292,12 @@ header('Content-Type: text/html; charset=UTF-8');
     </div>
 
 
-    <h2>Failures</h2>
-    <p>The following error codes may be returned in certain situations:</p>
+    <h2>Echec</h2>
+    <p>Sont renvoyés dans certains cas, les erreurs:</p>
     <ul>
-        <li><strong>401 Unauthorized</strong>: If the Bearer token is missing or invalid.</li>
+        <li><strong>401 Unauthorized</strong>:Token Invalide</li>
         <li><strong>404 Not Found</strong>:Si le joueur avec l'idJoueur n'existe pas (DELETE)</li>
-        <li><strong>400 Bad Request</strong>Si les paramètres dans le corps de la requête ne sont pas définis ou au mauvais format</li>
+        <li><strong>400 Bad Requête</strong>Si les paramètres dans le corps de la requête ne sont pas définis ou au mauvais format</li>
         <li><strong>405 Method Not Allowed</strong>:Si la méthode n'est pas GET,PUT,DELETE,POST,OPTIONS</li>
     </ul>
 </div>
