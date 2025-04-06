@@ -23,9 +23,6 @@ header('Content-Type: text/html; charset=UTF-8');
             padding: 10px 0;
             text-align: center;
         }
-        h1, h2, h3 {
-            color: #333;
-        }
         .content {
             padding: 20px;
             max-width: 1000px;
