@@ -44,3 +44,13 @@ header('Content-Type: text/html; charset=UTF-8');
 
     <p>L'Api utilise composer & GuzzleHTTP avec les fichiers composer dans le dossier /public/</p>
     <p>Il en va de même pour l'Application exploitant l'API qui utilise Guzzle pour charger les données statiques. Les fichiers composer sont dans le dossier /public/</p>
+
+
+    <p>Vous pouvez retrouver les pages de documentation à</p>
+    <ul>
+        <li><a href="./enums">Enums</a></li>
+        <li><a href="./fdm">Feuilles de Matchs</a></li>
+        <li><a href="./joueurs">Joueurs</a></li>
+        <li><a href="./matchs">Matchs</a></li>
+        <li><a href="./stats">Stats</a></li>
+    </ul>
